@@ -46,12 +46,11 @@ const readerSchema = new Schema({
             thumbnail: String
         })
         
-      },
+      }
 
 }, {
   timestamps: true,
 });
-/*{_id,title,description,book_link,book_image,writers}*/
-const Book = mongoose.model('reader', bookSchema);
+const Book = mongoose.model('reader', readerSchema);
 
 module.exports = Book

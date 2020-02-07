@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
-//const ReaderAPI =require("./router/reader")
+const ReaderAPI =require("./router/reader")
 const BookAPI = require("./router/book")
 /**
  * 
@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/book",BookAPI)
-//app.use("/reader",ReaderAPI)
+app.use("/reader",ReaderAPI)
 /*
  *  rooting 
  * */ 
@@ -37,7 +37,8 @@ app.get('/',function(req,res){
     res.send("ddd")
 })
 
-
+app.use("/book",BookAPI)
+app.use("/reader",ReaderAPI)
 
 
 app.listen(port, () => {
