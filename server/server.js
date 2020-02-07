@@ -7,9 +7,13 @@ const port = process.env.PORT || 5000;
 //const ReaderAPI =require("./router/reader")
 const BookAPI = require("./router/book")
 /**
+ * 
 *   connect to mongoDb
 */
+
+
 const connection = mongoose.connection;
+const g =5;
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true }
 );
