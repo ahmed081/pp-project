@@ -26,6 +26,7 @@ const readerSchema = new Schema({
     },
     gender:{
         type: String,
+        required: true
     },
     login:{
         type: new Schema({
