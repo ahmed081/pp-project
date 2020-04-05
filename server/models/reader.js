@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const readerSchema = new Schema({
-    
+   
     name:{
         type: new Schema({
             fist:{
@@ -30,8 +30,15 @@ const readerSchema = new Schema({
     },
     login:{
         type: new Schema({
-            username:String,
-            password: String,
+            username:{
+                type: String,
+                required: true,
+                unique:true
+            },
+            password: {
+                type: String,
+                required:true
+            }
         }),
     },
     dob:{
@@ -48,10 +55,14 @@ const readerSchema = new Schema({
         })
         
       }
+    ,
+    token:{
+        type:String
+    }
 
 }, {
   timestamps: true,
 });
-const Book = mongoose.model('reader', readerSchema);
+const Book = mongoose.model('Reader', readerSchema);
 
 module.exports = Book

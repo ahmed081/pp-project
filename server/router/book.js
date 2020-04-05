@@ -26,14 +26,24 @@ Router.route('/:id').put((req, res) => {
 });
 //add book
 Router.route('/add').post(function(req,res){
-    const {_id,title,description,book_link,book_image,writers} = req.body;
-    const newBook= new Book({_id,title,description,book_link,book_image,writers});
+    console.log("here")
+    const newBook= new Book(req.body);
     newBook.save()
     .then(() => res.json('book added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
+//find all
+Router.route('/').get(function(req,res){
+  
+  Book.find({}, function (err, docs) {
+    if(err)
+      res.send("erreur")
+    res.send(docs);
+  })
+  
+});
 
 //delete book
 Router.route('/:id').delete(function(req,res){

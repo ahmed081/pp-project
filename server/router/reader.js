@@ -12,6 +12,7 @@ Router.route('/:id').put((req, res) => {
           fist:req.body.name.fist,
           last:req.body.name.last
         },
+        token:req.body.name.token,
         email:req.body.email,
         mobile:req.body.mobile,
         gender:req.body.gender,
@@ -40,12 +41,14 @@ Router.route('/:id').put((req, res) => {
 });
 //add reader
 Router.route('/add').post(function(req,res){
+
     
     const newReader= new Reader({
         name:{
           fist:req.body.name.fist,
           last:req.body.name.last
         },
+        
         email:req.body.email,
         mobile:req.body.mobile,
         gender:req.body.gender,
@@ -62,12 +65,14 @@ Router.route('/add').post(function(req,res){
           large:req.body.picture.large ,
           medium: req.body.picture.medium,
           thumbnail: req.body.picture.thumbnail
-          }
+          },
+          token:req.body.token
 
     });
     newReader.save()
     .then(() => res.json('reader added!'))
     .catch(err => res.status(400).json('Error: ' + err));
+    
 });
 //delete reader
 Router.route('/:id').delete(function(req,res){
