@@ -3,30 +3,35 @@
 const Book = require('../models/book')
 const Router = require('express').Router();
 //edit 
-Router.route('/:id').put((req, res) => {
-  const {id,title,description,book_link,book_image,writers} = req.body;
-
-  
-
+Router.route('/:id').put( async (req, res) => {
+  //const {id,title,description,book_link,book_image,writers} = req.body;
+  const id = req.params.id
+  let book = await Book.findOneAndUpdate({_id:id}, req.body, {
+    new: true,
+    upsert: true,
+    rawResult: true // Return the raw result from the MongoDB driver
+  });
+  if(book.value instanceof Book)
+      res.json('book updated!')
+  else 
+    res.status(400).json('Error: ' + err)
+  /* 
+  console.log(req.params)
   Book.findById(id)
     .then(book => {
-      book.id = id;
-      book.title = title;
-      book.description = description;
-      book.book_link = book_link;
-      book.book_link = book_link;  
-      book.book_image = book_image;
-      book.writers = writers;
       
+      console.log('update here 1')
+      book = [...req.body,book]
+      console.log("book: ",book)
       book.save()
         .then(() => res.json('book updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json('Error: ' + err)); */
 });
 //add book
 Router.route('/add').post(function(req,res){
-    console.log("here")
+    
     const newBook= new Book(req.body);
     newBook.save()
     .then(() => res.json('book added!'))
