@@ -16,6 +16,8 @@
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "pdf-image": "^2.0.0",
+    "pdftoimage": "^1.0.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "session-file-store": "^1.4.0",

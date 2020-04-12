@@ -1,0 +1,1 @@
+var PDFImage = require("pdf-image").PDFImage;

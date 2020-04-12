@@ -2,32 +2,37 @@
 const Router     = require('express').Router();
 const Reader     = require('../models/reader')
 
+const JWT        = require("jsonwebtoken")
+
+
 Router.route('/').post(async (req, res) => {
     const {userName,password} =req.body;
-    console.log("ahmed")
-    res.write("")
+    
+    
     Reader.findOne({'login.username':userName}).then(reader =>{
       
-      console.log("findone by usename : ",reader)
+      console.log("findone by usename : ")
       if(password === reader.login.password)
       {
-        res.status = 200
-        res.write("you are loged in")
         
-        status = 200
+        const token = JWT.sign({username:userName,_id:reader._id,role:0},process.env.SECRET)
+        console.log("password correct")
+        res.status = 200
+        res.json({token})
       }
         
       else{
-        res.write("password incorrect")
+        
         res.status = 404
+        res.send("password incorrect")
+       
       } 
     }
     ).catch(err =>{
-      res.write("username incorrect ")
       res.status = 404
-      }).then(()=>{
-      res.send()
-    })
+      res.send("username incorrect ")
+        
+      })
     
     
   })

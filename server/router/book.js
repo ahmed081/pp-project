@@ -15,19 +15,7 @@ Router.route('/:id').put( async (req, res) => {
       res.json('book updated!')
   else 
     res.status(400).json('Error: ' + err)
-  /* 
-  console.log(req.params)
-  Book.findById(id)
-    .then(book => {
-      
-      console.log('update here 1')
-      book = [...req.body,book]
-      console.log("book: ",book)
-      book.save()
-        .then(() => res.json('book updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err)); */
+
 });
 //add book
 Router.route('/add').post(function(req,res){
@@ -41,7 +29,7 @@ Router.route('/add').post(function(req,res){
 
 //find all
 Router.route('/').get(function(req,res){
-  
+  console.log("payload : ", req.paylaod)
   Book.find({}, function (err, docs) {
     if(err)
       res.send("erreur")

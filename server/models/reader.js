@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const readerSchema = new Schema({
-   
+   _id:{
+        type:String,
+        required : true,
+        trim:true
+   },
     name:{
         type: new Schema({
             fist:{
@@ -19,7 +23,8 @@ const readerSchema = new Schema({
     },
     email:{
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     mobile:{
         type: String

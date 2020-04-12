@@ -1,10 +1,12 @@
-const Reader = require('../models/reader')
-const Router = require('express').Router();
-
-
+const Reader     = require('../models/reader')
+const Router     = require('express').Router();
+const JWT        = require("jsonwebtoken")
+const uuid       = require('uuid/v4')
 //edit
 Router.route('/:id').put((req, res) => { 
 
+  const SECRET = process.env.SECRET;
+  
   Users.findById(req.params.id)
     .then(reader => {
       reader={
@@ -42,36 +44,20 @@ Router.route('/:id').put((req, res) => {
 //add reader
 Router.route('/add').post(function(req,res){
 
-    
-    const newReader= new Reader({
-        name:{
-          fist:req.body.name.fist,
-          last:req.body.name.last
-        },
-        
-        email:req.body.email,
-        mobile:req.body.mobile,
-        gender:req.body.gender,
-        login:{
-          username:req.body.login.username,
-          password: req.body.login.password,
-        },
-        dob:{
-          date: req.body.dob.date,
-          age: req.body.dob.age
-            
-        },
-        picture: {
-          large:req.body.picture.large ,
-          medium: req.body.picture.medium,
-          thumbnail: req.body.picture.thumbnail
-          },
-          token:req.body.token
 
-    });
+  const _id = uuid();
+
+    
+    console.log(req.payload)
+   
+   const myUser = {_id,...req.body};
+   const newReader= new Reader(myUser);
+
     newReader.save()
-    .then(() => res.json('reader added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .then(() => {
+      res.json('reader added!')
+    })
+    .catch(err => res.status(400).json('Error: ' + err)); 
     
 });
 //delete reader
