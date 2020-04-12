@@ -23,14 +23,14 @@ Router.route('/').post(async (req, res) => {
         
       else{
         
-        res.status = 404
-        res.send("password incorrect")
+        
+        res.send(401,"password incorrect")
        
       } 
     }
     ).catch(err =>{
-      res.status = 404
-      res.send("username incorrect ")
+      
+      res.send(401,"username incorrect ")
         
       })
     
