@@ -17,11 +17,44 @@ Router.route('/:id').put( async (req, res) => {
     res.status(400).json('Error: ' + err)
 
 });
+Router.route('/uplaod').post(  (req, res) => {
+  
+  res.status(200).json('done')
+});
 //add book
 Router.route('/add').post(function(req,res){
-    
-    const newBook= new Book(req.body);
-    newBook.save()
+    const {
+      title,
+      ISBN,
+      langage,
+      description,
+      pages,
+      authors,
+      country,
+      subject,
+    }=req.body
+    console.log({
+      title,
+      ISBN,
+      langage,
+      description,
+      pages,
+      authors,
+      country,
+      subject,
+    })
+    const newBook= new Book({
+      title,
+      ISBN,
+      langage,
+      description,
+      pages,
+      authors,
+      country,
+      subject
+    });
+    console.log('data book : ', req.body)
+     newBook.save()
     .then(() => res.json('book added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -33,7 +66,8 @@ Router.route('/').get(function(req,res){
   Book.find({}, function (err, docs) {
     if(err)
       res.send("erreur")
-    res.send(docs);
+   // console.log("docs lenght : ",{length : docs.length ,docs})
+    res.send({length : docs.length ,docs});
   })
   
 });
@@ -54,13 +88,19 @@ Router.route('/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 //get book by page & size
-Router.route('/page/:size').get((req, res) => {
+Router.route('/:page/:size').get((req, res) => {
     const {page,size} = req.params
-    Book.find().limit(size).skip(page*size)
-      .then(books => res.json(books))
+    console.log("here : ",req.params)
+    Book.find({}).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
+      .then(books => {
+        
+        Book.find().count()
+          .then(count => res.json({length : count ,docs:books}))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
       .catch(err => res.status(400).json('Error: ' + err));
 });
-//count nulbre of books
+//count numbre of books
 Router.route('/count').get((req, res) => {
   
     Book.find().count()

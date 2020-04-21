@@ -8,7 +8,7 @@ const JWT        = require("jsonwebtoken")
 Router.route('/').post(async (req, res) => {
     const {userName,password} =req.body;
     
-    
+    console.log("login : ",req.body)
     Reader.findOne({'login.username':userName}).then(reader =>{
       
       console.log("findone by usename : ")
