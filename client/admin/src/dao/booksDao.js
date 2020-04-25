@@ -36,4 +36,25 @@ const addBook=({...data})=>{
       console.log(err.request)
     }) 
 }
-export default {getBooksByPage,addBook}
+const editBook=(token,{...book})=>{
+  console.log(token)
+  
+    Axios.put(`${url}/book/${book._id}?token=${token}`,{...book},{
+   }).then((res)=>{
+     window.location='/booksManagement'
+      console.log(res.data)
+  }).catch(err=>{
+    console.log(err.request)
+  })  
+}
+const deleteBook=(token,book,props)=>{
+  console.log(token)
+  
+    Axios.delete(`${url}/book/${book._id}?token=${token}`).then((res)=>{
+      console.log(res.data)
+      props.deleteBook(book.key)
+  }).catch(err=>{
+    console.log(err.request)
+  })  
+}
+export default {getBooksByPage,addBook,editBook,deleteBook}

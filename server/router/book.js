@@ -5,7 +5,8 @@ const Router = require('express').Router();
 //edit 
 Router.route('/:id').put( async (req, res) => {
   //const {id,title,description,book_link,book_image,writers} = req.body;
-  const id = req.params.id
+  console.log("edit : ",req.body)
+   const id = req.params.id
   let book = await Book.findOneAndUpdate({_id:id}, req.body, {
     new: true,
     upsert: true,
@@ -14,7 +15,8 @@ Router.route('/:id').put( async (req, res) => {
   if(book.value instanceof Book)
       res.json('book updated!')
   else 
-    res.status(400).json('Error: ' + err)
+    res.status(400).json('Error: ' + err) 
+
 
 });
 Router.route('/uplaod').post(  (req, res) => {
@@ -75,9 +77,10 @@ Router.route('/').get(function(req,res){
 //delete book
 Router.route('/:id').delete(function(req,res){
     const {id} = req.params;
-    Book.findByIdAndDelete(id)
+   
+     Book.findByIdAndDelete(id)
     .then(() => res.json('book deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json('Error: ' + err)); 
 });
 
 //get book by id

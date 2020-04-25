@@ -10,6 +10,11 @@ export const BooksManagemntReducer =(state =[], action)=>
             return []
         case "SET_BOOKS":
             return []
+        case "DELETE_BOOK":
+            return state.filter((book)=>{
+                    if(book.key!==action.key) 
+                        return book
+                })
         default:
             return state
     }

@@ -35,7 +35,16 @@ const Book = (props)=>{
         
         if(action !== "add")
         {
+            console.log("book inso :" ,props.books[parseInt(action)].pages)
             setHeader("Afficher un livre ")
+            setTitle(props.books[parseInt(action)].title)
+            setISBN(props.books[parseInt(action)].ISBN)
+            setLangage(props.books[parseInt(action)].langage)
+            setDescription(props.books[parseInt(action)].description)
+            setPages(props.books[parseInt(action)].pages)
+            setAuthors(props.books[parseInt(action)].authors)
+            setCountry(props.books[parseInt(action)].country)
+            setSubject(props.books[parseInt(action)].subject)
         }
         }, [])
     const uplaodData = {
@@ -53,18 +62,40 @@ const Book = (props)=>{
         },
         };
         const onSubmit =()=>{
-            BooksDao.addBook({
-                title,
-                ISBN,
-                langage,
-                description,
-                pages,
-                authors,
-                country,
-                subject,
-                file,
-                token:props.token
-            })
+            if(action === "add")
+            {
+                BooksDao.addBook({
+                    title,
+                    ISBN,
+                    langage,
+                    description,
+                    pages,
+                    authors,
+                    country,
+                    subject,
+                    file,
+                    token:props.token
+                })
+            }else{
+
+                const {_id} = props.books[parseInt(action)]
+                BooksDao.editBook(
+                        props.token,
+                        {
+                            _id,
+                            title,
+                            ISBN,
+                            langage,
+                            description,
+                            pages,
+                            authors,
+                            country,
+                            subject,
+                            file,
+                        }
+                    )
+            }
+            
         }
     return (
         
@@ -89,7 +120,7 @@ const Book = (props)=>{
                     <Input.TextArea placeholder="desription" allowClear value={description}  onChange={value => setDescription(value.target.value)} />
                 </Form.Item>
                 <Form.Item label="Nombre des pages">
-                    <InputNumber min={1} defaultValue={pages} onChange={(value)=> setPages(value)} />
+                    <InputNumber min={1} value={pages} onChange={(value)=> setPages(value)} />
                 </Form.Item>
                
                 <Form.Item label="Langage">

@@ -21,3 +21,9 @@ export const CurrentPage =(page)=>{
         page: page
     }
 }
+export const deleteBook =(key)=>{
+    return {
+        type : "DELETE_BOOK",
+        key: key
+    }
+}
