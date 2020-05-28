@@ -15,7 +15,7 @@ export const booksLenght =(lenght)=>{
         lenght: lenght
     }
 }
-export const CurrentPage =(page)=>{
+export const bookCurrentPage =(page)=>{
     return {
         type : "BOOKS_PAGE",
         page: page

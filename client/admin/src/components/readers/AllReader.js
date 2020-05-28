@@ -21,12 +21,12 @@ import BooksDao from '../../dao/booksDao'
  */
 const { Option } = Select;
 
-const Book = (props)=>{
+const Reader = (props)=>{
   
     
   const [visible,setVisible]= useState(false)
   const [loading , setLoading] = useState(true)
-  const [book,setBook]= useState()
+  const [reader,setReader]= useState()
   const [selectedRows,setSelectedRows] = useState([])
   const [action , setAction]= useState()
   const rowSelection = {
@@ -42,27 +42,28 @@ const Book = (props)=>{
   };
   const columns = [
     {
-      title: 'ISBN',
-      dataIndex: 'ISBN',
-      render: text => <a>{text}</a>,
+      title: 'Name',
+      dataIndex: 'name',
+      render: name  => <a>{name.fist + " "+name.last}</a>,
     },
     {
-      title: 'title',
-      dataIndex: 'title',
+      title: 'email',
+      dataIndex: 'email',
     },
     {
-      title: 'pages',
-      dataIndex: 'pages',
+      title: 'Sexe',
+      dataIndex: 'gender',
     },
     {
-      title: 'langage',
-      dataIndex: 'langage',
+      title: 'Age',
+      dataIndex: 'dob',
+      render : dob => <div>{dob.age}</div>
     },
     {
-        title: 'Action',
+        title: 'Actions',
         render: (props) => {
           return(
-            <div><Link to={"booksManagement/"+props.key} >afficher</Link>
+            <div><Link to={"usersManagement/"+props.key} >afficher</Link>
             <span> | </span>
             <Link onClick={()=>{showModal(props);console.log(visible)}} >delete</Link></div>
           )
@@ -72,29 +73,29 @@ const Book = (props)=>{
  // rowSelection object indicates the need for row selection
 
     const showModal = (props) => {
-      setBook(props)
+      setReader(props)
       setVisible(true)
     };
   
     const handleOk = e => {
       console.log(e);
-      console.log("deleted ",book._id)
-      
-      BooksDao.deleteBook(props.token,book,props)
+      console.log("deleted ",reader._id)
+      props.deleteReader(reader.key)
+     // BooksDao.deleteBook(props.token,reader,props)
       setVisible(false)
     };
   
     const handleCancel = e => {
       console.log(e);
-      console.log("cancel delete ",book._id)
+      console.log("cancel delete ",reader._id)
       setVisible(false)
     };
     useEffect(() => {
         setTimeout(() => {
           setLoading(false)
-          console.log(props.books)
+          console.log(props.readers)
         }, 500);
-        console.log("all book : ", props)
+        console.log("all readers : ", props)
         }, [])
         function onChange(pageNumber) {
           setLoading(true)
@@ -102,7 +103,7 @@ const Book = (props)=>{
             setLoading(false)
           }, 500);
             BooksDao.getBooksByPage(pageNumber,props)
-            props.bookCurrentPage(pageNumber-1)
+            props.readerCurrentPage(pageNumber-1)
             
             console.log('Page: ', pageNumber);
           }
@@ -112,8 +113,10 @@ const Book = (props)=>{
           }
     return (
         <div>
-            <SuppModel handleCancel = {handleCancel} handleOk={handleOk} visible ={visible} book={book} />
-            <Button type="dashed" style ={{float: "right",top: "18px", fontWeight: "bold"}} ><Link to ='booksManagement/add'>ajouter nouveau</Link></Button>
+            <SuppModel handleCancel = {handleCancel} handleOk={handleOk} visible ={visible} reader={reader} />
+            <Button type="dashed" style ={{float: "right",top: "18px", fontWeight: "bold"}} >
+              <Link to ='usersManagement/add'>ajouter nouveau</Link>
+            </Button>
             <div style={{position: "relative",top: "40px"}}>
                 <Select defaultValue="action" style={{ width: 120 }} onChange={handleChange}>
                     <Option value="Supprimer">Supprimer</Option>
@@ -121,7 +124,7 @@ const Book = (props)=>{
                 </Select>
                 <Button type="primary" 
                     disabled={selectedRows.length<=0?true:false} 
-                    onClick={()=>{action ==="Supprimer" ?selectedRows.map(async book => await BooksDao.deleteBook(props.token,book,props)):console.log("ssss")}}>
+                    onClick={()=>{action ==="Supprimer" ?selectedRows.map(async reader => await BooksDao.deleteBook(props.token,reader,props)):console.log("ssss")}}>
                     executer 
                 </Button>
                 <Table 
@@ -131,7 +134,7 @@ const Book = (props)=>{
                          ...rowSelection,
                         }}
                         columns={columns}
-                        dataSource={props.books}
+                        dataSource={props.readers}
                 />
             </div>
             
@@ -147,7 +150,7 @@ const SuppModel = (props)=>{
           onOk={props.handleOk}
           onCancel={props.handleCancel}
         >
-          {props.book?<p>voulez vous vraiment supprimer le livre : {props.book._id}</p> :null}
+          {props.reader?<p>voulez vous vraiment supprimer le livre : {props.reader.name.fist+ " "+props.reader.name.last}</p> :null}
           
           
         </Modal>
@@ -155,20 +158,20 @@ const SuppModel = (props)=>{
 }
 
 const mapSotre =(store)=>{
-  const {BooksManagemntReducer} = store
-  const {BooksLenghtReduicer} = store
+  const {ReadersManagemntReducer} = store
+  const {ReadersLenghtReduicer} = store
   const {TokenReduicer} = store
-  const {BooksPageReduicer} = store
+  const {ReadersPageReduicer} = store
   return {
     
-    books : BooksManagemntReducer,
-    length : BooksLenghtReduicer,
+    readers : ReadersManagemntReducer,
+    length : ReadersLenghtReduicer,
     token : TokenReduicer,
-    page : BooksPageReduicer
+    page : ReadersPageReduicer
   }
 } 
 
-export default connect(mapSotre,{...Actions}) (Book)
+export default connect(mapSotre,{...Actions}) (Reader)
 
 
 

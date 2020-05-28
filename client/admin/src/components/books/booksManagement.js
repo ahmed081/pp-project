@@ -36,7 +36,7 @@ const BookManagement = (props)=>{
     useEffect(() => {
       
       console.log("props books : ",props)
-      props.CurrentPage(0)
+      props.bookCurrentPage(0)
       BooksDao.getBooksByPage(0,props)
       /* 
         Axios.get(`http://localhost:3030/book?token=${props.token}`)

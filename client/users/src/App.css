@@ -1,15 +1,25 @@
 .App {
   text-align: center;
 }
-.ant-layout-header,.ant-layout-sider,.ant-layout.ant-layout-has-sider,.ant-layout-footer
+/* .ant-layout-header,.ant-layout-sider,.ant-layout.ant-layout-has-sider,.ant-layout-footer
 {
   background: none !important;
 
-}
+} */
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+.sidebarMenu a {
+  padding: 13px 4px 6px 35px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #000000c4;
+  display: block;
+}
+.sidebarMenu a:hover {
+  color: #f1f1f1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -17,7 +27,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.ant-layout-header{
+  padding: 0 0px;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,7 +40,22 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.ant-layout-content {
+  padding: 18px 120px;
+  background-color: white !important;
+}
+@media  (max-width: 1050px) {
+  .ant-layout-content {
+    padding: 18px 0px;
+  }
+}
+.ant-layout-header {
+  background: white !important;
+  color: 000000c4 !important;
+  text-align: center;
+  font-weight: bold;
+  font-size: 27px;
+}
 .App-link {
   color: #61dafb;
 }

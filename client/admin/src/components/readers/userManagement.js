@@ -2,18 +2,46 @@ import React,{useState,useEffect} from 'react'
 import {connect} from 'react-redux'
 import Actions from '../../redux/actions'
 import Const from '../../data/const'
-const {setTitle} = Actions
-const UserManagement = (props)=>{
+import Axios from 'axios'
+import { Link,useLocation,Route } from 'react-router-dom'
+import data from "./json.json"
+import reader from "./reader"
+import AllReader from "./AllReader"
+
+import BooksDao from '../../dao/booksDao'
+
+
+const BookManagement = (props)=>{
+    let location = useLocation()
+    
     useEffect(() => {
-        console.log(props)
-        props.setTitle(Const.USERSUI_TITLE)
-        }, [])
+      data.map(reader =>{
+        props.addReader(reader)
+      })
+      
+      //props.bookCurrentPage(0)
+      //BooksDao.getBooksByPage(0,props)
+  
+      props.setTitle(Const.USERSUI_TITLE)
+
+    }, [])
     return (
-        <div>UserManagement</div>
+        <div>
+            
+            <Route path="/usersManagement" exact component={AllReader}/>
+            <Route path="/usersManagement/:id" component={reader}/>
+        </div>
     )
 }
 const mapSotre =(store)=>{
-    return store
+    const {ReadersManagemntReducer} = store
+    const {TokenReduicer} = store
+    const {ReadersPageReduicer} = store
+    return {
+      readers : ReadersManagemntReducer,
+      token : TokenReduicer,
+      page : ReadersPageReduicer
+    }
 }
 
-export default connect(mapSotre,{setTitle}) (UserManagement);
+export default connect(mapSotre,{...Actions}) (BookManagement);

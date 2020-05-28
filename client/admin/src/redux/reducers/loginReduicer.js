@@ -1,4 +1,4 @@
-export const loginReduicer =(state=false, action)=>
+export const loginReduicer =(state=true, action)=>
 {
     
         switch (action.type) {

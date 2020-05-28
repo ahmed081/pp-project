@@ -1,16 +1,22 @@
 import {MenuMagementReducer,MenuTitle} from './UIReducers'
 import {BooksManagemntReducer,BooksLenghtReduicer,BooksPageReduicer} from './bookReduicers'
 import {loginReduicer,TokenReduicer} from './loginReduicer'
-
+import {ReadersManagemntReducer,ReadersLenghtReduicer,ReadersPageReduicer} from './readerReduicers'
 
 const Reducers = {
     MenuMagementReducer,
     MenuTitle,
-    BooksManagemntReducer,
+    
     loginReduicer,
     TokenReduicer,
+//books
+    BooksManagemntReducer,
     BooksLenghtReduicer,
-    BooksPageReduicer
+    BooksPageReduicer,
+//readers
+    ReadersManagemntReducer,
+    ReadersLenghtReduicer,
+    ReadersPageReduicer
 }
 
 
