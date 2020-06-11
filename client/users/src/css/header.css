@@ -1,0 +1,14 @@
+.HeaderApp{
+    height: "53px";
+    color:"white";
+    background-color:"rgba(214, 214, 214, 0.15)";
+    border-bottom: "1px solid #0000001a" ;
+
+}
+.MenuIcon{
+    width: "85px";
+    border-Right: "1px solid rgba(0, 0, 0, 0.77)";
+    padding: "0px 26%";
+    cursor: "pointer";
+    color: "#000000c4";
+}

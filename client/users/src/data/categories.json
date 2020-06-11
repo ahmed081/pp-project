@@ -1,0 +1,11 @@
+
+{
+    "count":5,
+    "categories": [
+        {"id":1,"name":"Arts & Entertainment" , "nbr": 50},
+        {"id":2,"name":"Humor" , "nbr": 50},
+        {"id":3,"name":"Business " , "nbr": 50},
+        {"id":4,"name":"College" , "nbr": 50},
+        {"id":5,"name":"Language Learning" , "nbr": 50,"link":"/cate0gories/5"}
+    ]
+}

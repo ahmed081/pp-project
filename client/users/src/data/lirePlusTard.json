@@ -1,0 +1,45 @@
+[
+    {
+        "title": "Algorithms of the Intelligent Web",
+        "ISBN": "1933988665",
+        "pageCount": 368,
+        "publishedDate": { "$date": "2009-05-29T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/marmanis.jpg",
+        "description": "Web 2.0 applications are best known for providing a rich user experience, but the parts you can't see are just as important   and impressive. Many Web 2.0 applications use powerful techniques to process information intelligently and offer features based on patterns and relationships in the data that couldn't be discovered manually. Successful examples of these Algorithms of the Intelligent Web include household names like Google Ad Sense, Netflix, and Amazon. These applications use the internet as a platform that not only gathers data at an ever-increasing pace but also systematically transforms the raw data into actionable information.    Algorithms of the Intelligent Web is an example-driven blueprint for creating applications that collect, analyze, and act on the massive quantities of data users leave in their wake as they use the web. You'll learn how to build Amazon- and Netflix-style recommendation engines, and how the same techniques apply to people matches on social-networking sites. See how click-trace analysis can result in smarter ad rotations. With a plethora of examples and extensive detail, this book shows you how to build Web 2.0 applications that are as smart as your users.",
+        "status": "PUBLISH",
+        "authors": ["Haralambos Marmanis", "Dmitry Babenko"],
+        "Subject": ["Web Development"]
+      },
+      {
+        "title": "JUnit in Action",
+        "ISBN": "1930110995",
+        "pageCount": 384,
+        "publishedDate": { "$date": "2003-10-01T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/massol.jpg",
+        "description": "Developers in the know are switching to a new testing strategy - unit testing - which interleaves coding and testing in an integrated way. This has proven to be a powerful combination that results in better designed software with fewer defects and faster delivery cycles.    JUnit in Action shows you how to benefit from this strategy using the popular open source testing framework, JUnit. It's a no fluff discussion of unit testing techniques and best practices. It gives examples of tough situations such as how to unit test EJBs, database applications, JSPs and Taglibs. It discusses unit testing of J2EE applications, and shows how to test in automated builds.",
+        "status": "PUBLISH",
+        "authors": ["Vincent Massol with Ted Husted"],
+        "Subject": ["Java"]
+      },
+      {
+        "title": "Tika in Action",
+        "ISBN": "1935182854",
+        "pageCount": 0,
+        "publishedDate": { "$date": "2011-12-01T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/mattmann.jpg",
+        "status": "PUBLISH",
+        "authors": ["Chris A. Mattmann", "Jukka L. Zitting"],
+        "Subject": ["Java"]
+      },
+      {
+        "title": "Ruby in Practice",
+        "ISBN": "1933988479",
+        "pageCount": 360,
+        "publishedDate": { "$date": "2009-03-01T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/mcanally.jpg",
+        "description": "Like Ruby itself, Ruby in Practice will make you more productive. The book shows you practical techniques and strategies for small projects and large-scale environments. A cookbook-style reference, it gives you concrete examples of systems integration, messaging, web development, and databases, all in a clear problem/ solution format.    Part 1 of the book concentrates on the Ruby way of developing software, especially how to use Ruby as a tool for integration. Part 2 talks about REST, Web services, asynchronous messaging, and deployment. In the last part, you'll discover how to manage all forms of data   from manipulating structured documents to identity management. Along the way you'll learn how to use Ruby to build new applications, solve more problems with less effort, integrate with your existing applications, and give new life to your legacy systems.",
+        "status": "PUBLISH",
+        "authors": ["Jeremy McAnally", "Assaf Arkin"],
+        "Subject": ["Programming"]
+      }
+]   

@@ -28,12 +28,14 @@ const bookSchema = new Schema({
     },
     country:{
         type: Array,
-        required: true
     },
     
     authors:{
         type: Array,
     },
+    image:{
+        type:String
+    }
 
 }, {
   timestamps: true,

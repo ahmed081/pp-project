@@ -1,0 +1,41 @@
+[
+  {
+    "title": "Practical Software Requirements",
+    "ISBN": "1884777597",
+    "pageCount": 448,
+    "publishedDate": { "$date": "1998-09-01T00:00:00.000-0700" },
+    "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/kovitz.jpg",
+    "longDescription": "Practical Software Requirements is a comprehensive guidebook for the programmer or manager writing requirements for the first time, as well as the experienced system analyst.    The author takes a unique approach to the subject: that a useful requirements document derives from the techniques employed by programmers and interface designers. His in-depth treatment includes non-hierarchical ways to break down complex problems, elements of the problem domain, and different information needed for different problem types.    An extensive section on style covers the nuts and bolts of making the information understandable: how to group and sequence topics, how to word a definition, even how to avoid boring the reader.    This unusual, example-filled book covers all aspects of a daunting but critical task: giving development staff all the information they need to do their jobs.",
+    "status": "PUBLISH",
+    "authors": ["Benjamin L. Kovitz"],
+    "categories": ["Software Engineering", "Theory"]
+  },
+  {
+    "title": "NHibernate in Action",
+    "ISBN": "1932394923",
+    "pageCount": 400,
+    "publishedDate": { "$date": "2009-02-01T00:00:00.000-0800" },
+    "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/kuate.jpg",
+    "longDescription": "In the classic style of Manning's \"In Action\" series, NHibernate in Action introduces .NET developers to the NHibernate Object/Relational Mapping tool. As NHibernate is a port of Hibernate from Java to .NET, the book is based on Manning's bestselling Hibernate in Action.    NHibernate in Action begins by describing how to implement persistence in a layered .NET application. The book then quickly springs into action by introducing NHibernate through a classic \"Hello World\" example. It explains how to configure NHibernate to specify the mapping information between business objects and database tables, and then explores the internal architecture of NHibernate. A complete example application is progressively built with Agile methodologies in mind, which shows readers all kinds of entity and relationship mappings and how to perform CRUD operations. The book also covers advanced techniques like caching, concurrency access, and isolation levels. The Hibernate Query Language (HQL) and criteria query APIs are thoroughly detailed with optimization tips.    The last chapters of this book discuss various development scenarios, how to implement the layers of an NHibernate application (covering Windows and Web development), and which tools are available for these tasks. They also provide some solutions for data-binding objects to .NET GUI controls, integrating services, and interacting with components using DataSets. Finally, they explain how to build a complex application involving advanced session management and distributed transactions.",
+    "status": "PUBLISH",
+    "authors": [
+      "Pierre Henri Kuate",
+      "Tobin Harris",
+      "Christian Bauer",
+      "",
+      "Gavin King"
+    ],
+    "categories": ["Microsoft .NET"]
+  },
+  {
+    "title": "Microsoft Reporting Services in Action",
+    "ISBN": "1932394222",
+    "pageCount": 656,
+    "publishedDate": { "$date": "2004-08-01T00:00:00.000-0700" },
+    "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/lachev.jpg",
+    "longDescription": "Business reporting is a lifeline of business, so a better reporting environment is a big deal. With a sophisticated, modern tool like Microsoft SQL Server 2000 Reporting Services, you can report-enable any type of application, regardless of its targeted platform or development language.    Written for information workers, system administrators, and developers, this book is a detailed and practical guide to the functionality provided by Reporting Services. It systematically shows off many powerful RS features by leading you through a dizzying variety of possible uses. Following a typical report lifecycle, the book shows you how to create, manage, and deliver RS reports.    In the first half, you will master the skills you need to create reports. System administrators will learn the ropes of managing and securing the report environment. The second half of the book teaches developers the techniques they need to integrate RS with their WinForm or web-based applications. It does this with the help of a wide variety of real-world scenarios which will give you ideas on how to use RS in addition to teaching you the ropes.    An experienced software designer and developer, Teo Lachev works as a technology consultant with the Enterprise Application Services practice of Hewlett-Packard. He is a Microsoft Certified Solution Developer and a Microsoft Certified Trainer. Teo lives in Atlanta, GA.",
+    "status": "PUBLISH",
+    "authors": ["Teo Lachev"],
+    "categories": ["Microsoft .NET"]
+  }
+]

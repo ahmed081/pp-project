@@ -1,0 +1,54 @@
+[
+    {
+        "title": "iText in Action, Second Edition",
+        "ISBN": "1935182617",
+        "pageCount": 600,
+        "publishedDate": { "$date": "2010-11-22T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/lowagie2.jpg",
+        "shortDescription": "iText in Action, Second Edition offers an introduction and a practical guide to iText and the internals of PDF. While at the entry level iText is easy to learn, there's an astonishing range of things you can do once you dive below the surface. This book lowers the learning curve and, though numerous innovative and practical examples, unlocks the secrets hidden in Adobe's PDF Reference. The examples are in Java but they can be easily adapted to .NET using one of iText's .NET ports: iTextSharp or iText.NET.",
+        "description": "Far from a static document presentation format, PDF supports many dynamic or interactive features. With iText, the leading tool creating and manipulating PDF programmatically, you can transform PDF documents into live, interactive applications quickly and easily. iText, a free, open source library for Java and .NET, was developed and maintained by Bruno Lowagie, the author of this book, with the help of many contributors.    iText in Action, Second Edition offers an introduction and a practical guide to iText and the internals of PDF. While at the entry level iText is easy to learn, there's an astonishing range of things you can do once you dive below the surface. This book lowers the learning curve and, though numerous innovative and practical examples, unlocks the secrets hidden in Adobe's PDF Reference. The examples are in Java but they can be easily adapted to .NET using one of iText's .NET ports: iTextSharp or iText.NET.    This totally revised new edition introduces the new functionality added to iText in recent releases, and it updates all examples from JDK 1.4 to Java 5. You'll learn how to use traditional and new form types in PDF, including full coverage of the AcroForm technology. You'll also explore the XML Forms Architecture (XFA) and learn how to fill static and dynamic XFA forms with iText. Along the way, you'll discover new techniques for linking documents, creating a PDF based on records in a database, and much more.    WHAT'S INSIDE        * Serve PDF to a browser      * Automate both static and dynamic XFA forms      * Generate dynamic PDF documents from XML files or databases      * Use PDF's many interactive features      * Add bookmarks, page numbers, watermarks, etc.      * Split, concatenate, and manipulate PDF pages      * Add digital signatures to a PDF file      * New hands-on, ready to use examples",
+        "status": "PUBLISH",
+        "authors": ["Bruno Lowagie"],
+        "Subject": ["Java"]
+      },
+      {
+        "title": "Power-3D",
+        "ISBN": "138412146",
+        "pageCount": 550,
+        "publishedDate": { "$date": "1997-10-01T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/lussier.jpg",
+        "description": "In the past, serious computer graphics programmers generally had to use \"industrial strength\" workstation hardware and software. Now, advanced graphics capabilities have become available in the PC arena. Whether you're a programmer, 3D enthusiast, C++ coder, games developer or animation specialist, POWER-3D will help you with fast, practical 3D implementations in the Windows environments.",
+        "status": "PUBLISH",
+        "authors": ["Kyle Lussier"],
+        "Subject": ["Computer Graphics"]
+      },
+      {
+        "title": "SNA and TCP/IP Enterprise Networking",
+        "ISBN": "131271687",
+        "pageCount": 540,
+        "publishedDate": { "$date": "1997-09-01T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/lynch.jpg",
+        "shortDescription": "SNA and TCP/IP Enterprise Networking shows the reader how enterprise networking evolved, what approaches and techniques can be used today, and where tomorrow's trends lie, illustrating among others Web-to-SNA connectivity and Java based integration approaches.",
+        "description": "Most textbooks concentrate on presenting the theory, concepts, and products, with examples of implementations in some cases. The distinctive quality of SNA and TCP/IP Enterprise Networking is in its structure. It answers not only \"What \", \"Why \", and \"How \", but also \"What's next \". It shows the reader how enterprise networking evolved, what approaches and techniques can be used today, and where tomorrow's trends lie, illustrating among others Web-to-SNA connectivity and Java based integration approaches.    SNA and TCP/IP Enterprise Networking was written by visionaries, scientists, networking product developers, industry experts, consultants, and end-user representatives, who not only implement the products but also participate in definition of open networking standards. It should be equally appealing to the network practitioners implementing technology as the senior managers making strategic decisions on enterprise networking.",
+        "status": "PUBLISH",
+        "authors": [
+          "Daniel C. Lynch",
+          "James P. Gray",
+          "and Edward Rabinovitch",
+          "editors"
+        ],
+        "Subject": ["Software Engineering", "Theory"]
+      },
+      {
+        "title": "Minimal Perl",
+        "ISBN": "1932394508",
+        "pageCount": 504,
+        "publishedDate": { "$date": "2006-07-01T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/maher.jpg",
+        "description": "Perl is a complex language that can be difficult to master. Perl advocates boast that \"There's More Than One Way To Do It\", but do you really want to learn several ways of saying the same thing to a computer     To make Perl more accessible, Dr. Tim Maher has over the years designed and taught an essential subset of the language that is smaller, yet practical and powerful. With this engaging book you can now benefit from \"Minimal Perl\", even if all you know about Unix is grep.    You will learn how to write simple Perl commands (many just one-liners) that go far beyond the limitations of Unix utilities, and those of Linux, MacOS/X, etc. And you  ll acquire the more advanced Perl skills used in scripts by capitalizing on your knowledge of related Shell resources. Sprinkled throughout are many Unix-specific Perl tips.    This book is especially suitable for system administrators, webmasters, and software developers.",
+        "status": "PUBLISH",
+        "authors": ["Tim Maher"],
+        "Subject": ["Perl"]
+      }
+      
+]

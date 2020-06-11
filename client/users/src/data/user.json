@@ -1,0 +1,37 @@
+{
+  "favorites": [
+  "5e8b589076acc64e14df8261",
+  null
+  ],
+  "encours": [],
+  "lectures": [],
+  "lireplustard": [],
+  "_id": "64c199f7-c14a-481c-ad8e-17e05420b0a7",
+  "name": {
+  "_id": "5ede025fc24fc852e88fa883",
+  "first": "Sharine",
+  "last": "Keizers"
+  },
+  "email": "sharine.keizers@example.com",
+  "mobile": "(795)-005-2164",
+  "gender": "F",
+  "login": {
+  "_id": "5ede025fc24fc852e88fa884",
+  "username": "heavypeacock456",
+  "password": "comet"
+  },
+  "dob": {
+  "_id": "5ede025fc24fc852e88fa885",
+  "date": "1952-12-23T18:05:35.299Z",
+  "age": 68
+  },
+  "picture": {
+  "_id": "5ede025fc24fc852e88fa886",
+  "large": "https://randomuser.me/api/portraits/women/76.jpg",
+  "medium": "https://randomuser.me/api/portraits/med/women/76.jpg",
+  "thumbnail": "https://randomuser.me/api/portraits/thumb/women/76.jpg"
+  },
+  "createdAt": "2020-06-08T09:18:23.921Z",
+  "updatedAt": "2020-06-09T09:08:14.395Z",
+  "__v": 2
+  }

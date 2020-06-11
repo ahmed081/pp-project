@@ -1,0 +1,48 @@
+[
+    {
+        "title": "Comprehensive Networking Glossary and Acronym Guide",
+        "ISBN": "013319955X",
+        "pageCount": 208,
+        "publishedDate": { "$date": "1995-01-01T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/malkin.jpg",
+        "shortDescription": "This glossary offers a complete collection of technical terms and acronyms used in the networking industry.",
+        "description": "This glossary offers a complete collection of technical terms and acronyms used in the networking industry. It covers general networking terminology, the specific terminology used in the Internet, and terms and acronyms specific to AppleTalk, IP, IPX, SNA, and OSI. It also covers national and international networking organizations and several major networks.    Organized in case-insensitive, alphabetic order, entries present well written definitions, understandable to novice readers and useful to experts. The glossary and the glossary entries are:    verified  cross-referenced  comprehensive  concise  understandable  For extra guidance, the book ends with three appendices, each listing the entries in one of three subject areas: networks and organizations, security, and applications and protocols.  The Comprehensive Networking Glossary and Acronym Guide is a valuable, single-source reference for the practical terminology of networking as well as a guide to networks and networking organizations.",
+        "status": "PUBLISH",
+        "authors": ["Gary Scott Malkin"],
+        "Subject": ["Internet"]
+      },
+      {
+        "title": "JavaServer Faces in Action",
+        "ISBN": "1932394125",
+        "pageCount": 744,
+        "publishedDate": { "$date": "2004-11-01T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/mann.jpg",
+        "description": "JavaServer Faces helps streamline your web development through the use of UI components and events (instead of HTTP requests and responses). JSF components (buttons, text boxes, checkboxes, data grids, etc.) live between user requests, which eliminates the hassle of maintaining state. JSF also synchronizes user input with application objects, automating another tedious aspect of web development.    JavaServer Faces in Action is an introduction, a tutorial, and a handy reference. With the help of many examples, the book explains what JSF is, how it works, and how it relates to other frameworks and technologies like Struts, Servlets, Portlets, JSP, and JSTL. It provides detailed coverage of standard components, renderers, converters, and validators, and how to use them to create solid applications. This book will help you start building JSF solutions today.",
+        "status": "PUBLISH",
+        "authors": ["Kito D. Mann"],
+        "Subject": ["Java"]
+      },
+      {
+        "title": "LINQ in Action",
+        "ISBN": "1933988169",
+        "pageCount": 576,
+        "publishedDate": { "$date": "2008-01-01T00:00:00.000-0800" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/marguerie.jpg",
+        "description": "LINQ, Language INtegrated Query, is a new extension to the Visual Basic and C# programming languages designed to simplify data queries and database interaction. It addreses O/R mapping issues by making query operations like SQL statements part of the programming language. Adding to its power, LINQ is extensible and can be used to query various data sources. It offers built-in support for querying in-memory collections like arrays or lists, XML, DataSets, and relational databases.    LINQ in Action is a fast-paced, comprehensive tutorial for professional developers who want to use LINQ. This book explores what can be done with LINQ, shows you how it works in an application, and addresses the emerging best practices. It presents the general purpose query facilities offered by LINQ in the upcoming C# 3.0 and VB.NET 9.0 languages. A running example introduces basic LINQ concepts. You   ll then learn to query unstructured data using LINQ to XML and relational data with LINQ to SQL. Finally, you   ll see how to extend LINQ for custom applications.    LINQ in Action will guide you along as you navigate this new world of lambda expressions, query operators, and expression trees. You   ll also explore the new features of C# 3.0, VB.NET 9.0. The book is very practical, anchoring each new idea with running code.    You will discover all the basics needed to get a clear understanding of LINQ. Whether you want to use LINQ to query objects, XML documents, or relational databases, you will find all the information you need to get started.    But LINQ in Action does not stop at the basic code. This book also shows you how LINQ can be used for advanced processing of data. This includes coverage of LINQ   s extensibility, which allows querying more data sources than those supported by default.    All code samples are built on a concrete business case. The running example, LinqBooks, is a personal book cataloging system that shows you how to create LINQ applications with Visual Studio 2008.",
+        "status": "PUBLISH",
+        "authors": ["Fabrice Marguerie", "Steve Eichert", "Jim Wooley"],
+        "Subject": ["Microsoft .NET"]
+      },
+      {
+        "title": "Internet BBSs",
+        "ISBN": "132869985",
+        "pageCount": 400,
+        "publishedDate": { "$date": "1996-10-01T00:00:00.000-0700" },
+        "image": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/mark.jpg",
+        "shortDescription": "Internet BBSs: A Guided Tour provides in-depth coverage of the new world of true BBSs now available world-wide. It is a valuable resource for anyone currently using the Internet.",
+        "description": "OK, so you use the Internet. You've surfed some Web sites and maybe sent e-mail. But, chances are, you've overlooked the rich and really personal dimension of the Internet represented by the explosive growth of Internet BBSs. That's because up till now BBS publications were limited in scope to the old era of dial-up BBSs.    Until recently the world of BBSs was geographically compartmentalized: in practical terms only the BBSs within a local telphone call were accessible. Now, the Internet has made all Internet BBSs accessible to anyone in the world. Internet BBSs: A Guided Tour provides in-depth coverage of this new world of true BBSs now available world-wide. It is a valuable resource for anyone currently using the Internet. Users of the major on-line service forums and chat groups should also read it to find out how they can access a much richer variety of BBSs at less cost.",
+        "status": "PUBLISH",
+        "authors": ["Richard Scott Mark"],
+        "Subject": ["Internet"]
+      }
+]

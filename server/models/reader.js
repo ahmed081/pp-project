@@ -10,7 +10,7 @@ const readerSchema = new Schema({
    },
     name:{
         type: new Schema({
-            fist:{
+            first:{
                 type : String,
                 required: true
             },
@@ -63,8 +63,23 @@ const readerSchema = new Schema({
     ,
     token:{
         type:String
+    },
+    favorites:{
+        type:Array
+    },
+    encours:{
+        type:Array
     }
-
+    ,
+    lectures:{
+        type:Array
+    },
+    lireplustard:{
+        type:Array
+    },
+    friends:{
+        type:Array
+    },
 }, {
   timestamps: true,
 });

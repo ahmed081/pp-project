@@ -44,18 +44,17 @@ app.listen(port, () => {
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(AutorisationMiddleware)
+//app.use(AutorisationMiddleware)
 app.use('/image',express.static('./image'))
 
 
 /*
  *  rooting 
  * */ 
+
 app.use('/login', login)
 app.use("/book",BookAPI)
 app.use("/reader",ReaderAPI)
-
-
 
 
 
