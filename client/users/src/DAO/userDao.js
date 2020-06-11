@@ -19,7 +19,8 @@ export const getOne =(id, setFriend)=>{
 
 }
 export const getFriends =(props)=>{
-    Axios.get(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}`)
+    console.log(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
+    Axios.get(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
     .then((res)=>{
         props.setFriends(res.data.docs)
         props.setLength(res.data.length)

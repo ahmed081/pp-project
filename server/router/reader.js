@@ -39,12 +39,18 @@ Router.route('/favorite').put(async(req,res)=>{
   
 })
 Router.route('/getfriend').get(async(req,res)=>{
-    const {id,size,page}=req.query
+    const {id,size,page,cle}=req.query
     let reader = await Reader.findById(id,{friends:1})
     console.log({reader})
-    Reader.find({_id:{$in:reader.friends}}).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
+    let query = {_id:{$in:reader.friends}}
+    if(cle || cle !== '')
+    {
+      console.log("eee")
+      query = {$and : [{_id:{$in:reader.friends}}, {$or:[{"name.first":{$regex : cle , $options: 'i'}},{"name.lest":{$regex : cle , $options: 'i'}}]}]}
+    }
+    Reader.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
     .then(data=>{
-      Reader.find({_id:{$in:reader.friends}}).count()
+      Reader.find(query).count()
       .then(count=>{
         res.json({page,size,length : count,docs:data})
       })

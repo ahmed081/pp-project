@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { getFriends, addFriend } from "../../DAO/userDao"
 import { connect } from "react-redux"
 import Actions from '../../redux/actions'
-import { Card, Avatar, Col, Row, Pagination } from "antd"
+import { Card, Avatar, Col, Row, Pagination, Input } from "antd"
 import {AddFriend} from './index'
 import { Link } from "react-router-dom"
 const Info =(props)=>{
@@ -10,15 +10,29 @@ const Info =(props)=>{
     const [page , setPage] = useState(1)
     const [friends,setFriends] =useState([])
     const [length,setLength]=useState(0)
+    const [searchValue,setSearchValue] = useState("")
     useEffect(()=>{
-        getFriends({...props,setPage,setLength,setFriends,page:page-1,size:size})
+        getFriends({...props,setPage,setLength,cle:searchValue,setFriends,page:page-1,size:size})
     },[])
     const ChangePage =(p)=>{
-        getFriends({...props,setLength,setFriends,page:p-1,size:size})
+        getFriends({...props,setLength,setFriends,cle:searchValue,page:p-1,size:size})
         setPage(p)
+    }
+    const searsh =(value)=>{
+        console.log(value)
+        setSearchValue(value)
+        getFriends({...props,setLength,setFriends,cle:value,page:0,size:size})
     }
     return (
         <Row>
+            <div style={{padding: "14px 22px"}}>
+                <Input.Search
+                        placeholder="input search text"
+                        onChange={(event)=>{searsh(event.target.value)}}
+                        onSearch={value => searsh(value)}
+                        style={{ width: 400 }}
+                    />
+            </div>
             {
                 friends.map(friend =>{
                     return(
