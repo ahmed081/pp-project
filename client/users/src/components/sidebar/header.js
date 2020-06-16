@@ -5,14 +5,14 @@ import {
   Avatar,
   } from 'antd';
 import {UserOutlined } from '@ant-design/icons';
-
+import logo from '../../images/logo.jpeg'
 const Header =()=>{
 
     return (
         
       <div  >
          <div style={SideBarStyle.AvatarIcon} >
-          <Avatar size={90} shape="square" icon={<UserOutlined />} />
+          <Avatar size={90} shape="square" src={logo} />
          </div>
           
           <h3><center>Mylib</center></h3>

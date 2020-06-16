@@ -6,25 +6,30 @@ import {
     Form,
     Input,
     Button,
-    Divider
+    Divider,
+    Empty,
+    Avatar,
+    Result
     } from 'antd';
 import {BodyStyle,ContactUsStyle} from "../style"
 import img from '../../images/backgroundImage.jpg'
 import Profile from "./profile/index"
-import Lecture from "./profile/lecture"
-import LirePlusTard from "./profile/lirePlusTard"
-import Favorie from "./profile/favorie"
-import Encours from "./profile/enCours"
+import Context from "./profile/Context"
 import ContactUs from "./contactezNous/index";
 import Books from "../books/index";
 import Friend from "../friend";
 import Lire from "./lire/lire";
 import AllFriend from "../friend/AllFriend";
-import { BrowserRouter, Route, Switch, Redirect, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, useLocation, Link } from "react-router-dom";
 import Book from "../books/book";
 import bookpage from "../books/bookpage";
+import UserBarMenu from "../userBar/menu"
+import logo from '../../images/logo.jpeg'
+import Categorie from "../books/Categorie";
+import Searsh from './searsh'
+import { FacebookOutlined, InstagramOutlined, GoogleOutlined, CopyrightCircleOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
-const { Header, Content} = Layout;
+const { Header, Content,Footer} = Layout;
 const Categories =[
     {name:"Arts & Entertainment" , nbr: 50},
     {name:"Humor" , nbr: 50},
@@ -47,24 +52,40 @@ const Body =(props)=>{
                     <Col xl={{...size(23)}} sm={{...size(0)}} xs={{...size(0)}}>Mylib</Col>
 
                 </Header>
-                <Content>
+                <Content style={{minHeight:"200px"}}>
                         <Switch>
                             <Route path='/' exact render={() => <Redirect to="/books"/>}/>  
                             <Route path='/books' exact component={Books}/>
                             <Route path='/contactUs' exact component={ContactUs}/>    
-                            <Route path='/LirePlusTard' exact component={LirePlusTard}/>   
-                            <Route path='/Favorie' exact component={Favorie}/>   
-                            <Route path='/Lecture' exact component={Lecture}/> 
+                            <Route path='/LirePlusTard' exact render ={()=><Context size={8} context={"lireplustard"} title={"je vais lire ..."}/> }/>
+                            <Route path='/Favorie' exact render ={()=><Context size={8} context={"favorite"} title={"Mes favoris"}/>}/>   
+                            <Route path='/Lecture' exact render ={()=><Context size={8} context={"lectures"} title={"J'ai lu ....."}/>}/> 
                             <Route path ='/profile' exact component={Profile} />
-                            <Route path ='/encours' exact component={Encours} />
+                            <Route path ='/encours' exact render ={()=><Context size={8} context={"encours"} title={"je suis en cours de lire...."}/>}/> 
+                            <Route  path='/books/categories' exact  render={() => <Redirect to="/books"/>}/>
+                            <Route  path='/books/categories/:id' exact  component={Categorie}/>
                             <Route path='/books/:id' exact  component={bookpage} />
                             <Route path='/amis/:id' exact  component={Friend} />
                             <Route path='/amis' exact  component={AllFriend} />
+                            <Route path='/searsh/:id' exact  component={Searsh} />
                             <Route path='/lire' exact  render={() => <Redirect to="/books"/>} />
                             <Route path='/lire/:id' exact  component={Lire} />
+                            <Route path='*' render={() => 
+                                    <Result
+                                    status="403"
+                                    title="403"
+                                    subTitle="Sorry, you are not authorized to access this page."
+                                    extra={<Button type="primary"><Link to="/">back home</Link></Button>}
+                                />} />
                         </Switch>
                    
-                </Content>
+                </Content >
+                <Footer>
+                    
+                    <div>
+                        <center><CopyrightCircleOutlined /> copyright 2020 MyLib</center>
+                    </div>
+                </Footer>
             </Layout>
         </div>
     )

@@ -9,18 +9,28 @@ import {
 import {BodyStyle} from "../../style"
 
 import Info from "./info"
-import Encours from "./enCours"
-import Lecture from "./lecture"
-import LirePlusTard from "./lirePlusTard"
-import Favorie from "./favorie"
 import Model from './model'
 import { connect } from "react-redux";
 import {UserOutlined,PlusOutlined,MessageOutlined,InfoCircleOutlined,ClockCircleOutlined} from '@ant-design/icons';
 
 import Actions from '../../../redux/actions'
-import { getEnCours, getLectures, getLirePlusTard, getFavorites } from "../../../DAO/BooksDao";
+import { getEnCours, getLectures, getLirePlusTard, getFavorites, getBasedContext } from "../../../DAO/BooksDao";
 const InfoModel =["Nom","Prénom","UserName","Email","Téléphone"]
-
+const reMake =(props)=>{
+    
+    const user = props.user;
+    const books = props.data.docs.map(book=>{
+        return {...book,
+            link : "/Books/"+book._id,
+            favorite:user.favorites.includes(book._id)?true:false,
+            lirePlusTard:user.lireplustard.includes(book._id)?true:false,
+            lecture:user.lectures.find(b=>book._id === b.id)?true:false,
+        }
+        
+    })
+    props.setBooks(books)
+    console.log("ahmed : ",props.data)
+}
 const { TabPane } = Tabs;
 const Profile =(props)=>{
     const TabsInfo =[
@@ -54,16 +64,32 @@ const Profile =(props)=>{
     const size =(span , offset=0)=>{
         return {span , offset}
     }
+    const [favoris,setFavoris]=useState([])
+    const [lecture,setLecture]=useState([])
+    const [enCours,setEnCours]=useState([])
+    const [lirePlusTard,setLirePlusTard]=useState([])
     
     const [length ,setLength]=useState(0)
     useEffect(()=>{
         //pass limit
         //page = 1
         //searsh word = ""
-        getEnCours(props,setLength)
-        getLectures(props,setLength)
-        getLirePlusTard(props,setLength)
-        getFavorites(props,setLength)
+        const initData = async ()=>{
+
+            const user = props.user;
+            let data = await getBasedContext({...props,page:0,size:4,cle:"",context:"lireplustard"})
+            reMake({user,data,setBooks:setLirePlusTard})
+            data = await getBasedContext({...props,page:0,size:4,cle:"",context:"favorite"})
+            reMake({user,data,setBooks:setFavoris})
+            data = await getBasedContext({...props,page:0,size:4,cle:"",context:"lectures"})
+            reMake({user,data,setBooks:setLecture})
+            data = await getBasedContext({...props,page:0,size:4,cle:"",context:"encours"})
+            reMake({user,data,setBooks:setEnCours})
+        }
+        
+        initData();
+
+        //getFavorites(props,setLength)
     },[])
     
     return(
@@ -71,21 +97,50 @@ const Profile =(props)=>{
             <Top user = {props.user}/>
             <Divider/>
             <Tabs  type="card" style={{width:"100%"}}>
-                {
-                    TabsInfo.map((tab,index)=>{
-                        return (
-                            <TabPane tab={
-                                <span>
-                                  {tab.icon} 
-                                  {tab.name}
-                                </span>
-                              } key={index+1}>
-                                  {tab.componenent}   
-                            </TabPane>
-                        )
-                    })
-                }
-               
+                <TabPane tab={
+                    <span>
+                        <InfoCircleOutlined/> 
+                        mes infos
+                    </span>
+                    } key={1}>
+                        <Info/>   
+                </TabPane>
+
+                <TabPane tab={
+                    <span>
+                        <InfoCircleOutlined/> 
+                        enCours
+                    </span>
+                    } key={2}>
+                        <Model books = {enCours} title= {"j'ai en cous de lire.... "} link ={"/encours"}/>
+                </TabPane>      
+                  
+                <TabPane tab={
+                    <span>
+                        <InfoCircleOutlined/> 
+                        favorites
+                    </span>
+                    } key={3}>
+                        <Model books = {favoris} title= {"mes favorie.... "} link ={"/Favorie"}/>
+                </TabPane> 
+
+                <TabPane tab={
+                    <span>
+                        <InfoCircleOutlined/> 
+                        lectures
+                    </span>
+                    } key={4}>
+                       <Model books = {lecture} title= {"je ai lu... "} link ={"/Lecture"}  />
+                </TabPane> 
+
+                <TabPane tab={
+                    <span>
+                        <InfoCircleOutlined/> 
+                        Lire plus Tard
+                    </span>
+                    } key={5}>
+                        <Model books = {lirePlusTard} title= {"je vais lire.... "} link ={"/LirePlusTard"}/>
+                </TabPane> 
             </Tabs>
         </Row>
     )
@@ -105,12 +160,9 @@ export const Top = (props)=>{
     )
 }
 const mapStore =(store)=>{
-    const {FavoritesReducer,EnCoursReducer,LecturesReducer,LirePlusTardReducer,userManagementReduicer} = store
+    const {userManagementReduicer} = store
     return{
-        favorites : FavoritesReducer,
-        lirePlusTard : LirePlusTardReducer,
-        lectures : LecturesReducer,
-        enCours : EnCoursReducer,
+        
         user:userManagementReduicer
 
     }

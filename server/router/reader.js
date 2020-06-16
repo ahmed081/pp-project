@@ -194,14 +194,13 @@ Router.route('/:id').put((req, res) => {
 
   const SECRET = process.env.SECRET;
   
-  Users.findById(req.params.id)
+  Reader.findById(req.params.id)
     .then(reader => {
       reader={
         name:{
-          fist:req.body.name.first,
+          first:req.body.name.first,
           last:req.body.name.last
         },
-        token:req.body.name.token,
         email:req.body.email,
         mobile:req.body.mobile,
         gender:req.body.gender,
@@ -221,7 +220,7 @@ Router.route('/:id').put((req, res) => {
           }
 
     }
-      
+      console.log(reader instanceof Reader)
       reader.save()
         .then(() => res.json('reader updated!'))
         .catch(err => res.status(400).json('Error: ' + err));

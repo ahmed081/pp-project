@@ -19,6 +19,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pdf-image": "^2.0.0",
+    "pdf2html": "^2.5.2",
+    "pdftohtmljs": "^0.6.0",
     "pdftoimage": "^1.0.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",

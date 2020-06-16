@@ -3,11 +3,16 @@ import {
     Col,
     Row,
     Divider,
-    Avatar
+    Avatar,
+    Descriptions,
+    Button,
+    Input
     } from 'antd';
-import {UserOutlined } from '@ant-design/icons';
+import {UserOutlined, KeyOutlined, SaveOutlined, EditOutlined } from '@ant-design/icons';
 import {BodyStyle} from "../../style"
 import { connect } from "react-redux";
+import { initUser } from "../../../redux/actions/userActions";
+import { editReader } from "../../../DAO/userDao";
 const InfoModel =["Nom","Prénom","UserName","Email","Téléphone"]
 
 
@@ -15,42 +20,73 @@ const Info =(props)=>{
     const size =(span , offset=0)=>{
         return {span , offset}
     }
-    
+    useEffect(()=>{
+        console.log(props.user)
+    },[])
     const user = props.user;
-    
-    return(
-        <Col xl={{...size(10)}} md={{...size(10)}} sm={{...size(24)}} xs={{...size(24)}} style={BodyStyle.LeftSide}>
-                <div style={{borderRight: "1px solid #0000001f",}}>
-
+    const [last,setLast]=useState(user.name.last)
+    const [first,setFirst]=useState(user.name.first)
+    const [date,setDate]=useState(user.dob.date)
+    const [email,setEmail]=useState(user.email)
+    const [mobile,setMobile]=useState(user.mobile)
+    const [username,setUsername]=useState(user.login.username)
+    const [edit,setEdit]=useState(false)
+    const [loadingEdit , setLoadingEdit]=useState(false)
+    const toggleEdit= ()=>{
+        if(edit)
+        {
+            setLoadingEdit(true)
+            setTimeout(() => {
+                const editUser =user
+                editUser.name.last = last
+                editUser.name.first = first
+                editUser.dob.date= date
+                editUser.email = email
+                editUser.mobile= mobile
+                editUser.login.username = username
+                console.log(editUser)
+                setEdit(!edit)
+                editReader({user:editUser}).then(data=>{
+                    setLoadingEdit(false)
+                    initUser(editUser)
+                })
                 
-                <Divider plain>
-                    <Avatar size={100} src={user.picture.large} />
-
-                </Divider>
+            },1000 );
+        }else setEdit(!edit)
+    }
+    return(
+        <Col span={20} offset={2} style={BodyStyle.LeftSide}>
+            <Descriptions size="small" column={1} title="Les informations d'utilisateur">
+                <Descriptions.Item  label="Nom"><Item title={last} edit={edit} function={setLast}/></Descriptions.Item>
+                <Descriptions.Item label="Prénom"><Item title={first} edit={edit} function={setFirst}/></Descriptions.Item>
+                <Descriptions.Item label="age"><Item title={date} edit={edit} function={setDate}/></Descriptions.Item>
+                <Descriptions.Item label="email"><Item title={email} edit={edit} function={setEmail} /></Descriptions.Item>
+                <Descriptions.Item label="mobile"><Item title={mobile} edit={edit} function={setMobile}/></Descriptions.Item>
+                <Descriptions.Item label="UserName"><Item title={username} edit={edit} function={setUsername}/></Descriptions.Item>
+                <Descriptions.Item label="Password"><Button><KeyOutlined /></Button></Descriptions.Item>
+                
+            </Descriptions>
+                <div>
+                    <Button type={edit?"primary":"ghost"} loading={loadingEdit} onClick={()=>toggleEdit()} >
+                        {
+                            edit?<div>Enregistrer <SaveOutlined /></div>:
+                            <div>Modifier <EditOutlined /></div>
+                        }
+                    </Button> 
                 </div>
-                <InfiDetail user ={props.user}/>
         </Col>
     )
 }
 
-const InfiDetail  = (props)=>{
-    const user = props.user
-    const fillterInfo=[user.name.last , user.name.first,user.login.username,user.email,user.mobile]
-
+const Item  = (props)=>{
+    
     return(
         <div>
             {
-                InfoModel.map((info,index) =>{
-                    return(
-                        <Row style={{padding: "10px 13px"}}>
-                            <Col span={9} style={{padding: "0px 30px"}}>
-                                {info}
-                            </Col>
-                            <Col span={6} style={{textAlign: "center"}}>:</Col>
-                            <Col span={9} >{fillterInfo[index]}</Col>
-                        </Row>
-                    )
-                })
+            props.edit?
+            <Input value={props.title} onChange={(event)=>{props.function(event.target.value)}} />:
+            <div>{props.title}</div>
+
             }
         </div>
     )

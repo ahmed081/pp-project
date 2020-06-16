@@ -1,5 +1,12 @@
 TO DO 
-- reset favorite....
-- work on searsh in favorite....
--think about profile 
-- work on friends	
+
+- searsh page 
+- categories
+- categorie page 
+- look at profile info 
+- contactez-nous
+- ui reducers
+- authentification 
+- registration 
+- factorisation 
+- 

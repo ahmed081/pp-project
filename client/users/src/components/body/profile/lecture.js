@@ -1,6 +1,6 @@
 import React , {useState,useEffect} from "react"
 import {
-    Divider, Row, Col, Card, Tooltip, Input,Pagination
+    Divider, Row, Col, Card, Tooltip, Input,Pagination, Empty
     } from 'antd';
 import { connect } from "react-redux";
 import { getLectures } from "../../../DAO/BooksDao";
@@ -31,24 +31,31 @@ const Lecture =(props)=>{
         getLectures(props,page-1,size,setLength)
     }
     return(
-        <div>
-            <div style={{borderLeft: "1px solid #0000001f",}}>
-                <Divider plain>
-                     vous avez lu...
-                </Divider>
-            </div>
-            <div style={{padding: "14px 22px"}}>
-                <Search
-                    placeholder="input search text"
-                    onChange={(event)=>{searsh(event.target.value)}}
-                    onSearch={value => searsh(value)}
-                    style={{ width: 400 }}
-                />
-            </div>
-            <Model books = {props.lectures}  />
-            <div style={{float:'right'}} >
-                <Pagination pageSize={size} simple defaultCurrent={page} total={length} onChange={onChangePage}  />
-            </div>
+        <div style={{height:"100%"}}>
+            {
+                props.lectures<=0?
+                <Empty/>:
+                    <div >
+                    <div style={{borderLeft: "1px solid #0000001f",}}>
+                        <Divider plain>
+                            vous avez lu...
+                        </Divider>
+                    </div>
+                    <div style={{padding: "14px 22px"}}>
+                        <Search
+                            placeholder="input search text"
+                            onChange={(event)=>{searsh(event.target.value)}}
+                            onSearch={value => searsh(value)}
+                            style={{ width: 400 }}
+                        />
+                    </div>
+                    <Model books = {props.lectures}  />
+                    <div style={{float:'right'}} >
+                        <Pagination pageSize={size} simple defaultCurrent={page} total={length} onChange={onChangePage}  />
+                    </div>
+                </div>
+            }
+            
         </div>
     )
 }

@@ -18,9 +18,16 @@ const Categories =[
     {name:"Language Learning" , nbr: 50}]
 const Categorie =(props)=>{
     useEffect(()=>{
-        
-        getCategories(props)
+        getCategories().then(data=>{
+            const ar = Object.keys(data)
+            setCategories(data)
+            
+        }).catch(err=>{
+            console.log("no categories")
+        })
     },[])
+    const [length ,setLength] = useState(10)
+    const [categories,setCategories]=useState({})
     const size =(span , offset=0)=>{
         return {span , offset}
     }
@@ -29,15 +36,26 @@ const Categorie =(props)=>{
             <Col xl={{...size(4)}} md={{...size(3)}} sm={{...size(0)}} xs={{...size(0)}}>
             <div><h2>Categories</h2></div>
             <div className="CategoriesMenu"> 
-                {
-                    props.Categories.map(cat=>{
+            {
+                
+                Object.keys(categories).map((cat,i)=>{
+                    console.log("zebi")
+                     if(i<length)
                         return (
                             <Divider orientation="left" plain>
-                            <Link to={`/books/categories/${cat.id}`} >{cat.name + " (" + cat.nbr + ") " }</Link>
+                            <Link onClick={()=>{window.location =`/books/categories/${cat}` }} >{cat + " (" + categories[cat] + ") " }</Link>
                             </Divider>
                         )
-                    })
+                }) 
+            }
+            </div>
+            <div >
+                
+                {
+                    length >= Object.keys(categories).length?"":
+                    <center><Link onClick={()=>setLength(length+5)} >afficher plus...</Link></center>
                 }
+                
             </div>
             </Col>
 
@@ -46,9 +64,9 @@ const Categorie =(props)=>{
 }
 
 const mapStore=(store)=>{
-    const {CategoriesManagemntReducer} = store
+    const {useManagementReduicer} = store
     return{
-        Categories : CategoriesManagemntReducer
+        user : useManagementReduicer
     }
 }
 

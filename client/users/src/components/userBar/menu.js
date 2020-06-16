@@ -7,10 +7,10 @@ const Header =()=>{
     return (
       <div className="sidebarMenu"> 
         <Link to="/profile"> Voir Profile</Link>
-        <Link to="/Lecture"> Mes lectures</Link>
-        <Link to="/LirePlusTard"> à lire plus tard </Link>
-        <Link to="/Favorie"> Mes favoris</Link>
-        <Link to="/Amis"> Les amis</Link>
+        <Link onClick={()=>window.location = `/Lecture`} > Mes lectures</Link>
+        <Link onClick={()=>window.location = `/LirePlusTard`} > à lire plus tard </Link>
+        <Link onClick={()=>window.location = `/Favorie`} > Mes favoris</Link>
+        <Link onClick={()=>window.location = `/Amis`} > Les amis</Link>
       </div>
  
       

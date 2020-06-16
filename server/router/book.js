@@ -28,6 +28,7 @@ Router.route('/group').post(  (req, res)=>{
   .then((data)=>{
     Book.find({_id :{$in : ids}}).count()
     .then(count=>{
+
       res.json({length : count,page:page,size:size , docs:data})
     })
     
@@ -38,16 +39,16 @@ Router.route('/uplaod').post(  (req, res) => {
   
   res.status(200).json('done')
 });
-Router.route('/collections',).get(async (req,res)=>{
+Router.route('/categories').get(async (req,res)=>{
   const categories = await Book.find({},{Subject :1,_id:0})
   let c =[]
-   console.log(categories.map(categorie=>{
+   categories.map(categorie=>{
     
-    c=[...c,
-      ...categorie.Subject
-    ]
-   return null
- }))
+        c=[...c,
+          ...categorie.Subject
+        ]
+      return null
+    })
  var initialValue = {}
  var reducer = function(tally, vote) {
    if (!tally[vote]) {
@@ -58,9 +59,29 @@ Router.route('/collections',).get(async (req,res)=>{
    return tally;
  }
  var result = c.reduce(reducer, initialValue) // {tacos: 2, pizza: 3, fries: 1, ice cream: 2}
- 
 
   res.json(result)
+})
+Router.route('/categories/:categorie').get((req,res)=>{
+  const {categorie} =req.params
+  const {id,page,size,cle}=req.query
+
+  let query ={Subject : {$in : [categorie]}}
+  if(cle && cle !== '')
+    {
+      console.log("eee")
+      query = {$and : [query , {title:{$regex : cle , $options: 'i'}}]}
+    }
+    
+  Book.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
+  .then(data =>{
+    console.log(data)
+    Book.find(query).count()
+    .then(count =>{
+      res.json({categorie:categorie,cle:cle,page:page,size:size,length:count,docs :data})
+    })
+    
+  })
 })
 //get favorites books
 Router.route('/favorite').get(  (req, res) => {
@@ -72,7 +93,7 @@ Router.route('/favorite').get(  (req, res) => {
     
     const favorite = data.favorites
     let query = { _id: { $in: favorite } }
-    if(cle || cle !== '')
+    if(cle && cle !== '')
     {
       console.log("eee")
       query = {$and : [{ _id: { $in: favorite } } , {title:{$regex : cle , $options: 'i'}}]}
@@ -82,7 +103,7 @@ Router.route('/favorite').get(  (req, res) => {
     .then(data=>{
       Book.find(query).count()
       .then(count =>{
-          res.json({cle:cle,page:page,size:size,lenght:count,docs :data})
+          res.json({cle:cle,page:page,size:size,length:count,docs :data})
       })
       
     })
@@ -205,19 +226,7 @@ Router.route('/add').post(function(req,res){
 
 
 //find all
-Router.route('/').get(function(req,res){
-  console.log("payload : ", req.paylaod)
-  const id = "edb36b06-2388-45ea-8079-a3df807531a3"
-  Book.find({}, function (err, docs) {
-    if(err)
-      res.send("erreur")
-      
-      res.send({length : docs.length ,docs:docs})
 
-    
-  })
-  
-});
 
 //delete book
 Router.route('/:id').delete(function(req,res){
@@ -236,14 +245,28 @@ Router.route('/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 //get book by page & size
-Router.route('/:page/:size').get((req, res) => {
-    const {page,size} = req.params
+Router.route('/').get((req, res) => {
+    const {page,size,cle} = req.query
+    if(!cle && !size && !page)
+    {
+      Book.find().then((data)=>{
+        Book.find().count()
+          .then(count => res.json({length : count ,docs:books}))
+          .catch(err => res.status(400).json('Error: ' + err));
+      }).catch(err => res.status(400).json('Error: ' + err));
+      return ;
+    }
     console.log("here : ",req.params)
-    Book.find({}).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
+    let query = {}
+    if(cle || cle !== '')
+    {
+      query =  {title:{$regex : cle , $options: 'i'}}
+    }
+    Book.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
       .then(books => {
         
-        Book.find().count()
-          .then(count => res.json({length : count ,page:page,size:size,docs:books}))
+        Book.find(query).count()
+          .then(count => res.json({length : count ,page:page,size:size,cle:cle,docs:books}))
           .catch(err => res.status(400).json('Error: ' + err));
       })
       .catch(err => res.status(400).json('Error: ' + err));

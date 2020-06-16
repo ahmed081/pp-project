@@ -18,15 +18,10 @@ export const getOne =(id, setFriend)=>{
     })
 
 }
-export const getFriends =(props)=>{
+export const getFriends =async(props)=>{
     console.log(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
-    Axios.get(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
-    .then((res)=>{
-        props.setFriends(res.data.docs)
-        props.setLength(res.data.length)
-        console.log("friends : ", res.data)
-        
-    })
+    const res = await Axios.get(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
+    return res.data
 
 }
 
@@ -44,4 +39,11 @@ export const addFriend =(props)=>{
         
     })
 
+}
+
+export const editReader= async props =>{
+    const res = await Axios.put(`${uri}/reader/${props.user._id}`,{
+        ...props.user
+    })
+    return res
 }

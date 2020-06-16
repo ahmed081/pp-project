@@ -17,7 +17,8 @@ const Header =(props)=>{
                 <Menu toggleMenu={props.toggleMenu} setToggleMenu={props.setToggleMenu} />
                 <Title/>
                 <Searsh/>
-                <User toggleProfile={props.toggleProfile} setToggleProfile={props.setToggleProfile}/>            
+                <User toggleProfile={props.toggleProfile} setToggleProfile={props.setToggleProfile}/>
+                      
             </Row>
         </div>
     )

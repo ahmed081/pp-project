@@ -1,6 +1,6 @@
 import React , {useState,useEffect} from "react"
 import {
-    Divider, Row, Col, Card, Tooltip,
+    Divider, Row, Col, Card, Tooltip, Empty,
     } from 'antd';
 
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ const size =(span , offset=0)=>{
     return {span , offset}
 }
 const Model =(props)=>{
+    const [loading , setLoading]=useState(true)
     useEffect(()=>{
 
     },[])
@@ -18,19 +19,11 @@ const Model =(props)=>{
     const length = props.length
     return(
         <div>
-            {
-                link?
-                    <div style={{borderLeft: "1px solid #0000001f",}}>
-                        <Divider plain>
-                            {title}
-                        </Divider>
-                    </div>:
-                    ""
-            }
+            
             
             <div>
             {
-                books.length<=0 ?<div>wait</div>:
+                books.length<=0 ?<Empty/>:
                 <Row gutter={[8,24]}>
                     {
                         books.map((book,index)=>{

@@ -55,6 +55,7 @@ app.use('/image',express.static('./image'))
 app.use('/login', login)
 app.use("/book",BookAPI)
 app.use("/reader",ReaderAPI)
+const Book = require('./models/book')
 
 
 

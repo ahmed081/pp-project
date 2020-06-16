@@ -22,13 +22,14 @@ const Books =(props)=>{
     }
     let location = useLocation()
     useEffect(()=>{
-        getBooks(props)
+        
+
     },[])
     return (
         
         <Row>
             <Categories/>
-            <Allbooks {...props}/>
+            <Allbooks />
             
         </Row>
                    

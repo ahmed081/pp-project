@@ -18,8 +18,8 @@ import {ClockCircleOutlined,StarOutlined,ReadOutlined} from '@ant-design/icons';
 import {image} from "../../data"
 import Categorie from './categories';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getOne, toggleFavorite,toggleLirePlusTard } from '../../DAO/BooksDao';
+import { useParams, Link } from 'react-router-dom';
+import { getOne, toggleFavorite,toggleLirePlusTard, toggle } from '../../DAO/BooksDao';
 const { TabPane } = Tabs;
 const Left = (props)=>{
     const book = props.book
@@ -133,7 +133,11 @@ const Buttons =(props)=>{
                 <Tooltip placement="right" title="Lire plus tard">
                     <Button 
                         type={lirePlusTard?"primary":"default"} 
-                        onClick={()=>toggleLirePlusTard(props,setLirePlustard,lirePlusTard)} 
+                        onClick={async()=>{
+                            await toggle({context : "lireplustard" ,...props,book :props.book })
+                            setLirePlustard(!lirePlusTard)
+                            console.log("lireplustard")
+                        }} 
                         shape="circle" icon={<ClockCircleOutlined />} 
                         size="large" />
                 </Tooltip>
@@ -142,14 +146,20 @@ const Buttons =(props)=>{
                 <Tooltip placement="right" title="ajouter au favorie">
                         <Button 
                             type={favorite?"primary":"default"} 
-                            onClick={()=>toggleFavorite(props,setfavorite,favorite)} 
+                            onClick={async()=>{
+                                toggle({context : "favorite" ,...props,book :props.book })
+                                console.log("favorite")
+                                setfavorite(!favorite)
+                            }} 
                             icon={<StarOutlined />} 
                             size="large" />  
                 </Tooltip>
                     </div>
             <div>
                 <Tooltip placement="right" title="Lire">
-                    <Button type="ghost " shape="circle" icon={<ReadOutlined />} size="large" />  
+                    <Link to={`/lire/${book._id}`}>
+                        <Button type="ghost " shape="circle" icon={<ReadOutlined />} size="large" />  
+                    </Link>
                 </Tooltip>
                     </div>
         </div>
@@ -162,38 +172,52 @@ const Title =({title})=>{
         </div>
     )
 }
+const reMake =(props)=>{
+    
+    const user = props.user;
+    const b = props.data
+    const book = {...props.data,
+        link : "/Books/"+b._id,
+        favorite:user.favorites.includes(b._id)?true:false,
+        lirePlusTard:user.lireplustard.includes(b._id)?true:false,
+        lecture:user.lectures.find(b=>b._id === b.id)?true:false,
+    }
+    props.setBook(book)
+    console.log("ahmed : ",props.data)
+}
 const BookPage =(props)=>{
     const size =(span , offset=0)=>{
         return {span , offset}
     }
     
     const {id} = useParams()
-    let book = props.books.find(book => book._id==id)
+    const [book , setBook]=useState({})
     useEffect(()=>{
-        props.selectBook({})
-        getOne(props,id)
+        getOne({id}).then(data =>{
+            reMake({data,...props,setBook})
+        })
         
     },[])
     return(
         <div>
             
-            {Object.entries(props.book).length <= 0? <div>wait</div>:
+            {Object.entries(book).length <= 0? <div>wait</div>:
             <Row >
                 
                 <Col  span ={24}>
                     <Row gutter={[8, 8]}>
                         <Col  xl={{...size(7,1)}} lg={{...size(7,1)}} md={{...size(9,1)}} xs={{...size(20,1)}} xs={{...size(20,1)}}  >
-                            <Left book ={props.book}/>
+                            <Left book ={book}/>
                         </Col>
                         <Col xl={{...size(2)}} lg={{...size(2)}} md={{...size(2)}} sm={{...size(2)}} xs={{...size(1)}}>
-                                <Buttons {...props} />
+                                <Buttons {...props} book={book}/>
                         </Col>
                         <Col style={{background:""}} xl={{...size(14)}} lg={{...size(14)}} md={{...size(11 )}} sm={{...size(22,1)}} xs={{...size(22,1)}}>
                             <Tabs type="card">
                                 <TabPane tab="à props" key="1">
-                                    <Title title ={props.book.title}/>
-                                    <BookInfos book = {props.book}/>
-                                    <Description description={props.book.description} />
+                                    <Title title ={book.title}/>
+                                    <BookInfos book = {book}/>
+                                    <Description description={book.description} />
                                 </TabPane>   
                                 <TabPane tab="avis" key="2">
                                     <Avie/>
@@ -214,12 +238,11 @@ const BookPage =(props)=>{
 const mapStore =(store)=>{
     const {
         BooksManagemntReducer,
-        selectBookReduicer,
+        
         userManagementReduicer
     
     } = store
     return {
-        book : selectBookReduicer,
         books : BooksManagemntReducer,
         user:userManagementReduicer
 
