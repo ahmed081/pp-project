@@ -1,13 +1,17 @@
 import React , {useState,useEffect} from "react"
 import { Link,useLocation } from 'react-router-dom'
-import {SideBarStyle} from '../style'
+import {SideBarStyle, HeaderStyle} from '../style'
 import { 
-  Avatar,
+  Avatar, Tooltip, Input,
   } from 'antd';
-import {UserOutlined } from '@ant-design/icons';
+import {UserOutlined, SearchOutlined } from '@ant-design/icons';
 import logo from '../../images/logo.jpeg'
 const Header =()=>{
 
+  const onSearsh =async(event)=>{
+    
+  }
+  const [searshValue,setSearshValue]=useState("")
     return (
         
       <div  >
@@ -16,7 +20,22 @@ const Header =()=>{
          </div>
           
           <h3><center>Mylib</center></h3>
-        
+          <Input
+                  onChange={(event)=>onSearsh(event)}
+                  
+                  style = {{borderRadius:"20px" ,height:"35px" ,zIndex:1}}
+                  placeholder="Chercher...."
+                  
+                  
+                  suffix={
+                    <Tooltip title="rechercher">
+                      <SearchOutlined style={HeaderStyle.HeaderComponentInputSearsh} onClick={()=>{
+                        if(searshValue !== "")
+                          window.location='/searsh/'+searshValue
+                      }} />
+                    </Tooltip>
+                  }
+              />
       </div>
       
       

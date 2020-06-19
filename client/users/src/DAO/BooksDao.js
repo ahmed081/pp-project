@@ -23,7 +23,7 @@ export const getBooks = async (props)=>{
 export const toggle =async (props)=>{
 
     await Axios.put(`${uri}/reader/${props.context}`,{user:props.user , id:props.book._id})
-    getUser(props)
+    //await getUser(props.id)
     
 }
 export const getOne=async(props)=>{

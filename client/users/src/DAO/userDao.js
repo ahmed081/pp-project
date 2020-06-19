@@ -9,13 +9,9 @@ export const getUser =(props)=>{
     })
 
 }
-export const getOne =(id, setFriend)=>{
-    Axios.get(`${uri}/reader/${id}`)
-    .then((res)=>{
-
-        console.log("init user : ", res.data)
-        setFriend(res.data)
-    })
+export const getOne =async(id)=>{
+    const res = await Axios.get(`${uri}/reader/${id}`)
+    return res.data
 
 }
 export const getFriends =async(props)=>{
@@ -45,5 +41,17 @@ export const editReader= async props =>{
     const res = await Axios.put(`${uri}/reader/${props.user._id}`,{
         ...props.user
     })
+    console.log(res.status)
+    return res
+}
+
+export const editPassword= async props =>{
+    console.log(`${uri}/reader/password/${props._id}`)
+    const res = await Axios.put(`${uri}/reader/password/${props._id}`,{
+        password :props.password,
+        NewPassword:props.NewPassword
+    })
+     
+    
     return res
 }

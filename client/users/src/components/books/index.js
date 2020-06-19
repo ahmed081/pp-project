@@ -15,14 +15,7 @@ const BooksIndex =(props)=>{
     return (
         
         <div>
-            <BrowserRouter>
-                <Switch>
-                    <Route  path='/books' exact  component= {Books}/>
-                    <Route  path='/books/categories' exact  render={() => <Redirect to="/books"/>}/>
-                    <Route  path='/books/categories/:id' exact  component={Categorie}/>
-                    <Route path='/books/:id' exact  component={BookPage} />
-                </Switch>
-            </BrowserRouter>
+            <Books/>
         </div>
             
         

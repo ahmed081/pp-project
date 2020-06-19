@@ -1,12 +1,16 @@
 TO DO 
 
-- searsh page 
-- categories
-- categorie page 
-- look at profile info 
-- contactez-nous
-- ui reducers
-- authentification 
+-/ searsh page 
+-/ categories
+-/ categorie page 
+-/ look at profile info 
+-/ recomendation
+-/ categories
+-/ authentification 
+
+- authentification errors
 - registration 
+- ui reducers
 - factorisation 
-- 
+- contactez-nous
+- age

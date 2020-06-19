@@ -25,8 +25,8 @@ const Book =(props)=>{
                 <Link to={book.link}>
                 <Card
                     hoverable
-                    style={{ width: "100%", height:"400px" }}
-                    cover={<img alt={book.title} src={book.image} />}
+                    style={{ width: "100%", }}
+                    cover={< img  height='300px' alt={book.title} src={book.image} />}
                 >
                 <Meta 
                     title={book.title}

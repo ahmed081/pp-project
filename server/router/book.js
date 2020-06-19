@@ -6,23 +6,20 @@ const Reader     = require('../models/reader')
 //edit 
 Router.route('/:id').put( async (req, res) => {
   //const {id,title,description,book_link,book_image,writers} = req.body;
-  console.log("edit : ",req.body)
    const id = req.params.id
-  let book = await Book.findOneAndUpdate({_id:id}, req.body, {
-    new: true,
-    upsert: true,
-    rawResult: true // Return the raw result from the MongoDB driver
-  });
-  if(book.value instanceof Book)
-      res.json('book updated!')
-  else 
-    res.status(400).json('Error: ' + err) 
 
-
+    let book = await Book.findOneAndUpdate({_id:id}, req.body, {
+      new: true,
+      upsert: true,
+      rawResult: true // Return the raw result from the MongoDB driver
+    });
+    if(book.value instanceof Book )
+        res.json('book updated!')
+    throw res.status(400).json('Error: ' + err)
+    
 });
 Router.route('/group').post(  (req, res)=>{
   const {ids}=req.body
-  console.log(req.body)
   const {page,size} = req.query
   Book.find({_id :{$in : ids}}).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
   .then((data)=>{
@@ -40,26 +37,33 @@ Router.route('/uplaod').post(  (req, res) => {
   res.status(200).json('done')
 });
 Router.route('/categories').get(async (req,res)=>{
+  const {cle}= req.query
+  let query = {}
   const categories = await Book.find({},{Subject :1,_id:0})
+
   let c =[]
    categories.map(categorie=>{
-    
-        c=[...c,
-          ...categorie.Subject
-        ]
+      c=[...c,
+        ...categorie.Subject
+      ]
       return null
     })
- var initialValue = {}
- var reducer = function(tally, vote) {
-   if (!tally[vote]) {
-     tally[vote] = 1;
-   } else {
-     tally[vote] = tally[vote] + 1;
-   }
-   return tally;
- }
- var result = c.reduce(reducer, initialValue) // {tacos: 2, pizza: 3, fries: 1, ice cream: 2}
-
+    if(cle && cle!=="")
+    {
+          c=c.filter(item => item.includes(cle))
+    }
+    let initialValue = {}
+    let reducer = function(tally, vote) {
+      if (!tally[vote]) {
+        tally[vote] = 1;
+      } else {
+        tally[vote] = tally[vote] + 1;
+      }
+      return tally;
+    }
+    let result = c.reduce(reducer, initialValue) // {tacos: 2, pizza: 3, fries: 1, ice cream: 2}
+    
+    
   res.json(result)
 })
 Router.route('/categories/:categorie').get((req,res)=>{
@@ -69,13 +73,11 @@ Router.route('/categories/:categorie').get((req,res)=>{
   let query ={Subject : {$in : [categorie]}}
   if(cle && cle !== '')
     {
-      console.log("eee")
       query = {$and : [query , {title:{$regex : cle , $options: 'i'}}]}
     }
     
   Book.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
   .then(data =>{
-    console.log(data)
     Book.find(query).count()
     .then(count =>{
       res.json({categorie:categorie,cle:cle,page:page,size:size,length:count,docs :data})
@@ -87,7 +89,6 @@ Router.route('/categories/:categorie').get((req,res)=>{
 Router.route('/favorite').get(  (req, res) => {
   const {id,page,size,cle}=req.query
 
-  console.log({id,page,size,cle})
   Reader.findById(id,{"favorites":1})
   .then(data =>{
     
@@ -95,7 +96,6 @@ Router.route('/favorite').get(  (req, res) => {
     let query = { _id: { $in: favorite } }
     if(cle && cle !== '')
     {
-      console.log("eee")
       query = {$and : [{ _id: { $in: favorite } } , {title:{$regex : cle , $options: 'i'}}]}
     }
       
@@ -118,9 +118,8 @@ Router.route('/lireplustard').get(  (req, res) => {
     
     const lireplustard = data.lireplustard
     let query = { _id: { $in: lireplustard } }
-    if(cle || cle !== '')
+    if(cle && cle !== '')
     {
-      console.log("eee")
       query = {$and : [{ _id: { $in: lireplustard } } , {title:{$regex : cle , $options: 'i'}}]}
     }
     Book.find( query ).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
@@ -138,15 +137,13 @@ Router.route('/lireplustard').get(  (req, res) => {
 //get lectures books
 Router.route('/lectures').get(  (req, res) => {
   const {id,page,size,cle}=req.query
-  console.log(req)
   Reader.findById(id,{"lectures":1})
   .then(data =>{
     
     const lectures = data.lectures
     let query = { _id: { $in: lectures } }
-    if(cle || cle !== '')
+    if(cle && cle !== '')
     {
-      console.log("eee")
       query = {$and : [{ _id: { $in: lectures } } , {title:{$regex : cle , $options: 'i'}}]}
     }
     Book.find( query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
@@ -162,7 +159,6 @@ Router.route('/lectures').get(  (req, res) => {
 //get encours books
 Router.route('/encours').get(  (req, res) => {
   const {id,page,size,cle}=req.query
-  console.log(req)
   Reader.findById(id,{"encours":1})
   .then(data =>{
     
@@ -170,7 +166,6 @@ Router.route('/encours').get(  (req, res) => {
     let query = { _id: { $in: encours } }
     if(cle || cle !== '')
     {
-      console.log("eee")
       query = {$and : [{ _id: { $in: encours } } , {title:{$regex : cle , $options: 'i'}}]}
     }
     Book.find( query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
@@ -196,17 +191,8 @@ Router.route('/add').post(function(req,res){
       subject,
       image
     }=req.body
-    console.log({
-      title,
-      ISBN,
-      langage,
-      description,
-      pages,
-      authors,
-      country,
-      subject,
-      image
-    })
+    
+  
     const newBook= new Book({
       title,
       ISBN,
@@ -218,7 +204,6 @@ Router.route('/add').post(function(req,res){
       subject,
       image
     });
-    console.log('data book : ', req.body)
      newBook.save()
     .then(() => res.json('book added!'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -256,7 +241,6 @@ Router.route('/').get((req, res) => {
       }).catch(err => res.status(400).json('Error: ' + err));
       return ;
     }
-    console.log("here : ",req.params)
     let query = {}
     if(cle || cle !== '')
     {

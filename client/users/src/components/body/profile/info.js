@@ -6,13 +6,15 @@ import {
     Avatar,
     Descriptions,
     Button,
-    Input
+    Input,
+    Modal
     } from 'antd';
 import {UserOutlined, KeyOutlined, SaveOutlined, EditOutlined } from '@ant-design/icons';
 import {BodyStyle} from "../../style"
 import { connect } from "react-redux";
 import { initUser } from "../../../redux/actions/userActions";
-import { editReader } from "../../../DAO/userDao";
+import { editReader, editPassword } from "../../../DAO/userDao";
+import Form from "antd/lib/form/Form";
 const InfoModel =["Nom","Prénom","UserName","Email","Téléphone"]
 
 
@@ -32,6 +34,10 @@ const Info =(props)=>{
     const [username,setUsername]=useState(user.login.username)
     const [edit,setEdit]=useState(false)
     const [loadingEdit , setLoadingEdit]=useState(false)
+    const [model , setModel] = useState(false)
+    const [password,setPassword]=useState("")
+    const [NewPassword,setNewPassword]=useState("")
+    const [comfirmePassword,setComfirmePassword]=useState("")
     const toggleEdit= ()=>{
         if(edit)
         {
@@ -44,28 +50,63 @@ const Info =(props)=>{
                 editUser.email = email
                 editUser.mobile= mobile
                 editUser.login.username = username
-                console.log(editUser)
-                setEdit(!edit)
+                
                 editReader({user:editUser}).then(data=>{
                     setLoadingEdit(false)
+                    setEdit(!edit)
                     initUser(editUser)
+                }).catch(err=>{
+                    setLoadingEdit(false)
+                    setEdit(!edit)
+                    console.log('noo')
                 })
                 
             },1000 );
         }else setEdit(!edit)
     }
+    
+    const showModal = () => {
+        setModel(true)
+      };
+    
+    const handleOk = async e => {
+        console.log(e);
+        await editPassword({NewPassword,password,_id:user._id})
+        setModel(false)
+      };
+    
+    const   handleCancel = e => {
+        console.log(e);
+        setModel(false)
+      };
     return(
         <Col span={20} offset={2} style={BodyStyle.LeftSide}>
             <Descriptions size="small" column={1} title="Les informations d'utilisateur">
-                <Descriptions.Item  label="Nom"><Item title={last} edit={edit} function={setLast}/></Descriptions.Item>
-                <Descriptions.Item label="Prénom"><Item title={first} edit={edit} function={setFirst}/></Descriptions.Item>
-                <Descriptions.Item label="age"><Item title={date} edit={edit} function={setDate}/></Descriptions.Item>
-                <Descriptions.Item label="email"><Item title={email} edit={edit} function={setEmail} /></Descriptions.Item>
-                <Descriptions.Item label="mobile"><Item title={mobile} edit={edit} function={setMobile}/></Descriptions.Item>
-                <Descriptions.Item label="UserName"><Item title={username} edit={edit} function={setUsername}/></Descriptions.Item>
-                <Descriptions.Item label="Password"><Button><KeyOutlined /></Button></Descriptions.Item>
+                <Descriptions.Item  label="Nom"><Item contexte='last' title={last} edit={edit} function={setLast}/></Descriptions.Item>
+                <Descriptions.Item label="Prénom"><Item contexte='first'  title={first} edit={edit} function={setFirst}/></Descriptions.Item>
+                <Descriptions.Item label="age"><Item contexte='date' title={date} edit={edit} function={setDate}/></Descriptions.Item>
+                <Descriptions.Item label="email"><Item contexte='email' title={email} edit={edit} function={setEmail} /></Descriptions.Item>
+                <Descriptions.Item label="mobile"><Item contexte='mobile' title={mobile} edit={edit} function={setMobile}/></Descriptions.Item>
+                <Descriptions.Item label="UserName"><Item contexte='username' title={username} edit={edit} function={setUsername}/></Descriptions.Item>
+                <Descriptions.Item label="Password"><Button  onClick={()=>showModal()}><KeyOutlined /></Button></Descriptions.Item>
                 
             </Descriptions>
+            <Modal
+                title="Modifer mot de passe"
+                visible={model}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                >
+                <div>
+                    dernier mot de passe 
+                    <Input.Password onChange={(event)=>setPassword(event.target.value)} />
+                    nouveau mot de passe 
+                    <Input.Password onChange={(event)=>setNewPassword(event.target.value)} />     
+                    comfirmez le mot de passe 
+                    <Input.Password  onChange={(event)=>setComfirmePassword(event.target.value)} />   
+                </div>
+                    
+            </Modal>
                 <div>
                     <Button type={edit?"primary":"ghost"} loading={loadingEdit} onClick={()=>toggleEdit()} >
                         {
@@ -84,7 +125,7 @@ const Item  = (props)=>{
         <div>
             {
             props.edit?
-            <Input value={props.title} onChange={(event)=>{props.function(event.target.value)}} />:
+            <Input style={{width:"250px"}} value={props.title} onChange={(event)=>{props.function(event.target.value)}} />:
             <div>{props.title}</div>
 
             }

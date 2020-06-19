@@ -6,22 +6,36 @@ import { Card, Avatar, Col, Row, Pagination, Input } from "antd"
 import {AddFriend} from './index'
 import { Link } from "react-router-dom"
 const Info =(props)=>{
-    const size = 8
+    const size = 5
     const [page , setPage] = useState(1)
     const [friends,setFriends] =useState([])
     const [length,setLength]=useState(0)
     const [searchValue,setSearchValue] = useState("")
     useEffect(()=>{
-        getFriends({...props,setPage,setLength,cle:searchValue,setFriends,page:page-1,size:size})
+        getFriends({...props,setPage,setLength,cle:searchValue,setFriends,page:page-1,size:size}).then(data=>{
+            setFriends(data.docs)
+            setLength(data.length)
+
+        })
     },[])
     const ChangePage =(p)=>{
-        getFriends({...props,setLength,setFriends,cle:searchValue,page:p-1,size:size})
-        setPage(p)
+        getFriends({...props,setPage,setLength,cle:searchValue,setFriends,page:p-1,size:size}).then(data=>{
+            setFriends(data.docs)
+            setLength(data.length)
+            setPage(p)
+
+        })
+        
     }
     const searsh =(value)=>{
         console.log(value)
-        setSearchValue(value)
-        getFriends({...props,setLength,setFriends,cle:value,page:0,size:size})
+        
+        getFriends({...props,setPage,setLength,cle:value,setFriends,page:page,size:size}).then(data=>{
+            setFriends(data.docs)
+            setLength(data.length)
+            setSearchValue(value)
+
+        })
     }
     return (
         <Row>
@@ -36,7 +50,7 @@ const Info =(props)=>{
             {
                 friends.map(friend =>{
                     return(
-                        <Col span={22} offset={1} style={{background:"red"}} >
+                        <Col span={22} offset={1} >
             
                             <div>
                                

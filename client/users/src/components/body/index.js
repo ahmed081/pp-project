@@ -28,14 +28,11 @@ import logo from '../../images/logo.jpeg'
 import Categorie from "../books/Categorie";
 import Searsh from './searsh'
 import { FacebookOutlined, InstagramOutlined, GoogleOutlined, CopyrightCircleOutlined } from "@ant-design/icons";
+import Categories from './categories'
+
 const { TextArea } = Input;
 const { Header, Content,Footer} = Layout;
-const Categories =[
-    {name:"Arts & Entertainment" , nbr: 50},
-    {name:"Humor" , nbr: 50},
-    {name:"Business " , nbr: 50},
-    {name:"College" , nbr: 50},
-    {name:"Language Learning" , nbr: 50}]
+
 const Body =(props)=>{
 
     const location = useLocation()
@@ -52,7 +49,7 @@ const Body =(props)=>{
                     <Col xl={{...size(23)}} sm={{...size(0)}} xs={{...size(0)}}>Mylib</Col>
 
                 </Header>
-                <Content style={{minHeight:"200px"}}>
+                <Content style={{minHeight:"400px"}}>
                         <Switch>
                             <Route path='/' exact render={() => <Redirect to="/books"/>}/>  
                             <Route path='/books' exact component={Books}/>
@@ -62,7 +59,7 @@ const Body =(props)=>{
                             <Route path='/Lecture' exact render ={()=><Context size={8} context={"lectures"} title={"J'ai lu ....."}/>}/> 
                             <Route path ='/profile' exact component={Profile} />
                             <Route path ='/encours' exact render ={()=><Context size={8} context={"encours"} title={"je suis en cours de lire...."}/>}/> 
-                            <Route  path='/books/categories' exact  render={() => <Redirect to="/books"/>}/>
+                            <Route  path='/books/categories' exact  component={Categories}/>
                             <Route  path='/books/categories/:id' exact  component={Categorie}/>
                             <Route path='/books/:id' exact  component={bookpage} />
                             <Route path='/amis/:id' exact  component={Friend} />
@@ -70,13 +67,7 @@ const Body =(props)=>{
                             <Route path='/searsh/:id' exact  component={Searsh} />
                             <Route path='/lire' exact  render={() => <Redirect to="/books"/>} />
                             <Route path='/lire/:id' exact  component={Lire} />
-                            <Route path='*' render={() => 
-                                    <Result
-                                    status="403"
-                                    title="403"
-                                    subTitle="Sorry, you are not authorized to access this page."
-                                    extra={<Button type="primary"><Link to="/">back home</Link></Button>}
-                                />} />
+                            <Route path='*' render={() => <Redirect to="/books"/>} />
                         </Switch>
                    
                 </Content >

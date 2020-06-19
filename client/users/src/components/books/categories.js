@@ -18,7 +18,7 @@ const Categories =[
     {name:"Language Learning" , nbr: 50}]
 const Categorie =(props)=>{
     useEffect(()=>{
-        getCategories().then(data=>{
+        getCategories({cle:""}).then(data=>{
             const ar = Object.keys(data)
             setCategories(data)
             
@@ -34,12 +34,18 @@ const Categorie =(props)=>{
 
     return (
             <Col xl={{...size(4)}} md={{...size(3)}} sm={{...size(0)}} xs={{...size(0)}}>
-            <div><h2>Categories</h2></div>
+            <div>
+                <center>
+                    <Link to="/books/categories">
+                    <h2>Categories</h2>
+                    </Link>
+                </center>
+            </div>
             <div className="CategoriesMenu"> 
             {
                 
                 Object.keys(categories).map((cat,i)=>{
-                    console.log("zebi")
+                    
                      if(i<length)
                         return (
                             <Divider orientation="left" plain>

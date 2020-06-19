@@ -11,8 +11,6 @@ Router.route('/favorite').put(async(req,res)=>{
   } = req.body
   
   let reader = await Reader.findById(user._id)
-  //console.log('params favorites2 : ' , req.body)
-  //console.log(reader instanceof Reader)
   if(reader.favorites){
 
       if(reader.favorites.includes(id)){
@@ -26,7 +24,6 @@ Router.route('/favorite').put(async(req,res)=>{
     const favorites =[id]
     reader={favorites,...reader}
   }
-  console.log(reader instanceof mongoose.Document)
   reader instanceof Reader; // true
   reader instanceof mongoose.Model; // true
   reader instanceof mongoose.Document; // true
@@ -41,11 +38,9 @@ Router.route('/favorite').put(async(req,res)=>{
 Router.route('/getfriend').get(async(req,res)=>{
     const {id,size,page,cle}=req.query
     let reader = await Reader.findById(id,{friends:1})
-    console.log({reader})
     let query = {_id:{$in:reader.friends}}
     if(cle || cle !== '')
     {
-      console.log("eee")
       query = {$and : [{_id:{$in:reader.friends}}, {$or:[{"name.first":{$regex : cle , $options: 'i'}},{"name.lest":{$regex : cle , $options: 'i'}}]}]}
     }
     Reader.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
@@ -81,8 +76,7 @@ Router.route('/encours').put(async(req,res)=>{
   } = req.body
   
   let reader = await Reader.findById(user._id)
-  //console.log('params favorites2 : ' , req.body)
-  //console.log(reader instanceof Reader)
+
   if(reader.encours){
 
       if(reader.encours.includes(id)){
@@ -96,7 +90,6 @@ Router.route('/encours').put(async(req,res)=>{
     const encours =[id]
     reader={encours,...reader}
   }
-  console.log(reader instanceof mongoose.Document)
   reader instanceof Reader; // true
   reader instanceof mongoose.Model; // true
   reader instanceof mongoose.Document; // true
@@ -116,15 +109,13 @@ Router.route('/lecture').put(async(req,res)=>{
     page
   } = req.body
   let reader = await Reader.findById(user._id)
-  //console.log('params favorites2 : ' , req.body)
-  //console.log(reader instanceof Reader)
+
   if(reader.lectures){
       const element = reader.lectures.find(book => book.id === id)
       
       if(element){
         const index = reader.lectures.indexOf(element)
         reader.lectures=[...reader.lectures.slice(0,index),...reader.lectures.slice(index+1,reader.lectures.length)]
-        console.log("element => ",reader.lectures)
         try {
           let requet  = await reader.save()
           
@@ -141,7 +132,6 @@ Router.route('/lecture').put(async(req,res)=>{
     const lectures =[{id,page}]
     reader={lectures,...reader}
   }
-  console.log(reader instanceof mongoose.Document)
   reader instanceof Reader; // true
   reader instanceof mongoose.Model; // true
   reader instanceof mongoose.Document; // true
@@ -162,8 +152,6 @@ Router.route('/lireplustard').put(async(req,res)=>{
   } = req.body
   
   let reader = await Reader.findById(user._id)
-  //console.log('params favorites2 : ' , req.body)
-  //console.log(reader instanceof Reader)
   if(reader.lireplustard){
 
       if(reader.lireplustard.includes(id)){
@@ -177,7 +165,6 @@ Router.route('/lireplustard').put(async(req,res)=>{
     const lireplustard =[id]
     reader={lireplustard,...reader}
   }
-  console.log(reader instanceof mongoose.Document)
   reader instanceof Reader; // true
   reader instanceof mongoose.Model; // true
   reader instanceof mongoose.Document; // true
@@ -190,42 +177,33 @@ Router.route('/lireplustard').put(async(req,res)=>{
   
 })
 //edit
-Router.route('/:id').put((req, res) => { 
+Router.route('/:id').put(async(req, res) => { 
 
   const SECRET = process.env.SECRET;
-  
-  Reader.findById(req.params.id)
-    .then(reader => {
-      reader={
-        name:{
-          first:req.body.name.first,
-          last:req.body.name.last
-        },
-        email:req.body.email,
-        mobile:req.body.mobile,
-        gender:req.body.gender,
-        login:{
-          username:req.body.login.username,
-          password: req.body.login.password,
-        },
-        dob:{
-          date: req.body.dob.date,
-          age: req.body.dob.age
-            
-        },
-        picture: {
-          large:req.body.picture.large ,
-          medium: req.body.picture.medium,
-          thumbnail: req.body.picture.thumbnail
-          }
+  let reader = await Reader.findOneAndUpdate({_id:req.body._id}, req.body, {
+    new: true,
+    upsert: true,
+    rawResult: true // Return the raw result from the MongoDB driver
+  });
+  if(reader.value instanceof Reader)
+      res.json('book updated!')
+  else 
+    res.status(400).json('Error: ' + err)
+ 
+});
+//edit mot de passe
+Router.route('/password/:id').put(async(req, res) => { 
 
-    }
-      console.log(reader instanceof Reader)
-      reader.save()
-        .then(() => res.json('reader updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+  const SECRET = process.env.SECRET;
+  let reader = await Reader.findById(req.params.id)
+  if(reader.login.password === req.body.password)
+  {
+    reader.login.password = req.body.NewPassword
+    reader.save()
+    res.json("password updated")
+  }else 
+    res.status(400).json('Error: ')
+ 
 });
 //add reader
 Router.route('/add').post(function(req,res){
@@ -234,7 +212,6 @@ Router.route('/add').post(function(req,res){
   const _id = uuid();
 
     
-    console.log(req.payload)
    
    const myUser = {_id,...req.body};
    const newReader= new Reader(myUser);
@@ -263,7 +240,6 @@ Router.route('/:id').get((req, res) => {
 // get reader by page and size
 Router.route('/:page/:size').get((req, res) => {
     const {page,size} = req.params
-    console.log('params : ', req.params)
     Reader.find().limit(parseInt(size)).skip(parseInt(page)*parseInt(size))
       .then(readers => {
         Reader.find().count().then(count =>{
@@ -275,7 +251,6 @@ Router.route('/:page/:size').get((req, res) => {
 
 //count numbre of reader
 Router.route('/count').get((req, res) => {
-    console.log("count")
     Reader.find().count()
       .then(count => res.send(count))
       .catch(err => res.status(400).json('Error: ' + err));
@@ -283,11 +258,9 @@ Router.route('/count').get((req, res) => {
 
 //find all
 Router.route('/').get(function(req,res){
-  console.log("payload : ", req.paylaod)
   Reader.find({}, function (err, docs) {
     if(err)
       res.send("erreur")
-   // console.log("docs lenght : ",{length : docs.length ,docs})
     res.send({length : docs.length ,docs});
   })
   

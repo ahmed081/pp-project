@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { getOne, addFriend } from "../../DAO/userDao";
 import BookDoa from "../../DAO/BooksDao";
 
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import Model from "../body/profile/model"
 const { TabPane } = Tabs;
 const TabsInfo =[
@@ -37,47 +37,60 @@ const Friend = (props)=>{
     const {id}=useParams()
     useEffect(()=>{
        
-        getOne(id, setFriend)
+        getOne(id).then((data)=>{
+            setFriend(data)
+        })
     },[])
     return(
+        
         <div>
-            {
-                friend?
+        {
+            friend?
+            <div>
                 <div>
-                    <Row>
-                        <Top user={friend}/>
-                        <Col span={20} offset={2} style={{background:""}}>
+                    {
+                        friend._id === props.user._id ?<Redirect to='/profile' />:
+                        <div>
                             <Row>
-                                <AddFriend {...props} id ={id}/>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Divider/>
-                    <Row>
-                    <Tabs onChange={callback} type="card" style={{width:"100%"}}>
-                        <TabPane tab={
-                            <span>
-                                Info
-                            </span>
-                            } key={1}>
-                               info..........
-                        </TabPane>
-                        
-                        <TabPane tab={
-                            <span>
-                                Activité
-                            </span>
-                            } key={2}>
-                                <LastActivities friend={friend}/>
-                        </TabPane>
-                    </Tabs>
-                    </Row>
+                    <Top user={friend}/>
+                    <Col span={20} offset={2} style={{background:""}}>
+                        <Row>
+                            <AddFriend {...props} id ={id}/>
+                        </Row>
+                    </Col>
+                </Row>
+                <Divider/>
+                <Row>
+                <Tabs onChange={callback} type="card" style={{width:"100%"}}>
+                    <TabPane tab={
+                        <span>
+                            Info
+                        </span>
+                        } key={1}>
+                           <Info user={friend} />
+                    </TabPane>
+                    
+                    <TabPane tab={
+                        <span>
+                            Activité
+                        </span>
+                        } key={2}>
+                            <LastActivities friend={friend}/>
+                    </TabPane>
+                </Tabs>
+                </Row>
+
+                        </div>
+                    }
                 </div>
-            :""
-            }
-            
-            
-        </div>
+                
+            </div>
+        :""
+        }
+        
+        
+    </div>
+        
     )
 }
 
@@ -103,14 +116,12 @@ export const AddFriend =(props)=>{
         console.log("friendsss 1 ",props.user)
     },[])
     return(
-        <Col xl={{...size(3,21)}} md={{...size(4,20)}} sm={{...size(5,19)}} xs={{...size(6,14)}}>
-            <Button 
-                type={isfriend?"primary":"ghost"} 
-                icon={isfriend?<CheckOutlined />:<PlusOutlined />  }
-                onClick={()=>toggleFriend()}
-                >
-                Suivre
-            </Button>
+        <Col xl={{...size(6,18)}} md={{...size(6,18)}} sm={{...size(8,16)}} xs={{...size(6,14)}}>
+            {
+                isfriend?<Button type='primary' icon={<CheckOutlined />}>ne plus suivre</Button>:
+                <Button type='ghost' icon={<PlusOutlined />}>Suivre</Button>
+            }
+
         </Col>
     )
 }

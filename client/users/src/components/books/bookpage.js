@@ -19,7 +19,7 @@ import {image} from "../../data"
 import Categorie from './categories';
 import { connect } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
-import { getOne, toggleFavorite,toggleLirePlusTard, toggle } from '../../DAO/BooksDao';
+import { getOne,  toggle, getByCategories} from '../../DAO/BooksDao';
 const { TabPane } = Tabs;
 const Left = (props)=>{
     const book = props.book
@@ -33,7 +33,7 @@ const Left = (props)=>{
                 <Card
                     hoverable
                     style={{ width: "100%" }}
-                    cover={<img alt={book.title} src={book.image} />}
+                    cover={<img height="300px" alt={book.title} src={book.image} />}
                 >
                     <Card.Meta 
                         title={book.title}
@@ -125,7 +125,7 @@ const Buttons =(props)=>{
         setfavorite(props.book.favorite)
         setLirePlustard(props.book.lirePlusTard)
     },[])
-    
+    let user = props.user
     const book = props.book
     return(
         <div className="book-page-icon">
@@ -136,6 +136,10 @@ const Buttons =(props)=>{
                         onClick={async()=>{
                             await toggle({context : "lireplustard" ,...props,book :props.book })
                             setLirePlustard(!lirePlusTard)
+                            
+                            if(lirePlusTard) user.lireplustard.pop(book._id)
+                            else user.lireplustard.push(book._id)
+                            props.initUser(user)
                             console.log("lireplustard")
                         }} 
                         shape="circle" icon={<ClockCircleOutlined />} 
@@ -150,6 +154,9 @@ const Buttons =(props)=>{
                                 toggle({context : "favorite" ,...props,book :props.book })
                                 console.log("favorite")
                                 setfavorite(!favorite)
+                                if(favorite) user.favorites.pop(book._id)
+                                else user.favorites.push(book._id)
+                                props.initUser(user)
                             }} 
                             icon={<StarOutlined />} 
                             size="large" />  
@@ -184,6 +191,31 @@ const reMake =(props)=>{
     }
     props.setBook(book)
     console.log("ahmed : ",props.data)
+}
+const Recommendation=(props)=>{
+    useEffect(()=>{
+        getByCategories({categorie:props.book.Subject[0],page:0,size:4,cle:""}).then(data=>{
+            
+            setBooks(data.docs)
+        })
+    },[])
+    const [books,setBooks]=useState([])
+    return(
+        
+        <Row gutter={[16,16]}>
+            {
+                books.map(book=>{
+                    return(
+                        <Col span={6} >
+                            <Link onClick={()=>{window.location=`/books/${book._id}`}}>
+                            <Left book={book}/>
+                            </Link>
+                        </Col>
+                    )
+                })
+            }
+        </Row>
+    )
 }
 const BookPage =(props)=>{
     const size =(span , offset=0)=>{
@@ -228,6 +260,10 @@ const BookPage =(props)=>{
                                 
                         </Col>
                 </Row>
+              </Col>
+              <Col span={24}>
+                <Divider orientation="center">recommendation</Divider>
+                <Recommendation book = {book} />
               </Col>
             </Row>
             }

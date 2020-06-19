@@ -66,3 +66,17 @@ mongoose.connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
+/* app.use("/" ,async (req,res)=>{
+  Book.find().then(async data=>{
+    await data.map(async (book,index)=>{
+      
+      if(!book.Subject.includes("el badaoui"))
+          book.Subject.push("el badaoui")
+      
+          console.log(book.Subject)
+      await book.save()
+          console.log(book instanceof Book)
+    })
+      
+  })
+}) */

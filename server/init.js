@@ -67,7 +67,7 @@ app.use("/",async (req,res)=>{
     
     return  data.items.filter(book=>{
       
-       if(book.volumeInfo.categories && book.volumeInfo.authors && book.volumeInfo.industryIdentifiers&&book.volumeInfo.description)
+       if(book.volumeInfo.categories && book.volumeInfo.authors && book.volumeInfo.industryIdentifiers&&book.volumeInfo.description&&book.volumeInfo.pageCount)
       {
             
             const object  = new Book( {

@@ -100,10 +100,10 @@ const Categorie =(props)=>{
             <div style={{padding: "14px 0px"}}>
                 <Input.Search
                     value ={searchValue}
-                    placeholder="input search text"
+                    placeholder="search text"
                     onChange={(event)=>{searsh(event.target.value)}}
                     onSearch={value => searsh(value)}
-                    style={{ width: 400 }}
+                    style={{ width: 320 }}
                 />
                 
             </div>

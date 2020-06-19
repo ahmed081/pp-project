@@ -8,13 +8,15 @@ import {
     Tooltip,
     Divider,
     Row,
-    Avatar
+    Avatar,
+    Descriptions
 } from 'antd';
 import { SearchOutlined,UserOutlined,DownOutlined,UpOutlined } from '@ant-design/icons';
 import { getBooks } from "../../DAO/BooksDao";
 import { connect } from "react-redux";
 import Actions from '../../redux/actions'
 import { getFriends } from "../../DAO/userDao";
+import { getCategories } from "../../DAO/categorieDao";
 
 const Searsh =(props)=>{
     const size =(span , offset=0)=>{
@@ -27,6 +29,7 @@ const Searsh =(props)=>{
   const [searshTab,setSearshTab] = useState(false)
   const [books,setBooks] = useState([])
   const [friends,setFriends] = useState([])
+  const [categories,setCategories] = useState({})
   const [searshValue,setSearshValue]=useState("")
 
   const user = props.user
@@ -34,11 +37,12 @@ const Searsh =(props)=>{
     const cle = event.target.value
     const databook = await getBooks({page:0,size:2,cle})
     const datauser = await getFriends({user,page:0,size:2,cle})
-    
+    const datacategories = await getCategories({cle})
     setSearshValue(cle)
     if(!searshTab) setSearshTab(!searshTab)
     setBooks(databook.docs)
     setFriends(datauser.docs)
+    setCategories(datacategories)
     //console.log(datauser)
   }
   return (
@@ -51,11 +55,14 @@ const Searsh =(props)=>{
                   
                   style = {{borderRadius:"20px" ,height:"35px" ,zIndex:1}}
                   placeholder="Chercher...."
-                  onPointerLeave={()=>console.log("ahmed")}
+                  
                   
                   suffix={
                     <Tooltip title="rechercher">
-                      <SearchOutlined style={HeaderStyle.HeaderComponentInputSearsh} />
+                      <SearchOutlined style={HeaderStyle.HeaderComponentInputSearsh} onClick={()=>{
+                        if(searshValue !== "")
+                          window.location='/searsh/'+searshValue
+                      }} />
                     </Tooltip>
                   }
               />
@@ -65,11 +72,8 @@ const Searsh =(props)=>{
                     <div>
                             <SearshBooks books={books} />
                             <SearshFriends friends={friends} />
-                            <div>
-                              <center>
-                                <Link onClick={()=>window.location=`/searsh/${searshValue}`}>plus..</Link>
-                              </center>
-                            </div>
+                            <SearshCategories categories={categories} size ={2} />
+                           
                               
                     </div>
                   </div>:""
@@ -77,6 +81,55 @@ const Searsh =(props)=>{
               
             </div>
         </Col>
+  )
+}
+export const SearshCategories =(props)=>{
+
+  const categories = props.categories
+  const size  = props.size
+  return (
+          <div >
+          <Divider orientation="left">
+              <div>
+                  categories
+              </div>
+          </Divider>
+          <div>
+            {
+              Object.keys(categories).map((categorie,i)=>{
+                if(i<size)
+                return(
+                  <Link onClick={()=>window.location = `/books/categories/${categorie}`} >
+                      <div>
+                      
+                        <Row gutter={[16,16]}>
+                        <Col span={5} style={{}}>
+                            <center>
+                              <Avatar size={50} style={{ backgroundColor: "orange", verticalAlign: 'middle' }}>
+                                  <h3 style={{color:"white"}} >{categorie[0]}</h3>
+                              </Avatar>
+                            </center>
+                          </Col>
+                          <Col span={19} offset={0} style={{}}>
+                            <h4>
+                              {categorie}
+                            </h4>
+                            <Descriptions>
+                              <Descriptions.Item label='page'>{categories[categorie]}</Descriptions.Item>
+                            </Descriptions>
+                         
+                          </Col>
+                          
+                        </Row>
+                        
+                    </div>
+                    </Link>
+                )
+              })
+            }
+          </div>
+          
+        </div>
   )
 }
 export const SearshBooks =(props)=>{
