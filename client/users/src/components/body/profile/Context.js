@@ -71,7 +71,7 @@ const Context =(props)=>{
                     placeholder="input search text"
                     onChange={(event)=>{searsh(event.target.value)}}
                     onSearch={value => searsh(value)}
-                    style={{ width: 400 }}
+                    style={{ width: 320 }}
                 />
             </div>
             <Model books = {books}  />

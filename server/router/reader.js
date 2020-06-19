@@ -39,10 +39,12 @@ Router.route('/getfriend').get(async(req,res)=>{
     const {id,size,page,cle}=req.query
     let reader = await Reader.findById(id,{friends:1})
     let query = {_id:{$in:reader.friends}}
-    if(cle || cle !== '')
+    if(cle && cle !== '')
     {
-      query = {$and : [{_id:{$in:reader.friends}}, {$or:[{"name.first":{$regex : cle , $options: 'i'}},{"name.lest":{$regex : cle , $options: 'i'}}]}]}
+      
+      query = {_id:{$in:reader.friends}, $or:[{"name.last":{$regex : cle , $options: 'i'}},{"name.first":{$regex : cle , $options: 'i'}}]}
     }
+    console.log(query)
     Reader.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
     .then(data=>{
       Reader.find(query).count()
@@ -50,6 +52,24 @@ Router.route('/getfriend').get(async(req,res)=>{
         res.json({page,size,length : count,docs:data})
       })
     })
+})
+
+Router.route('/searsh').get(async(req,res)=>{
+  const {size,page,cle}=req.query
+  let query = {}
+  if(cle && cle !== '')
+  {
+    
+    query = {$or:[{"name.last":{$regex : cle , $options: 'i'}},{"name.first":{$regex : cle , $options: 'i'}}]}
+  }
+  
+  Reader.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
+  .then(data=>{
+    Reader.find(query).count()
+    .then(count=>{
+      res.json({page,size,length : count,docs:data})
+    })
+  })
 })
 Router.route('/addfriend').put(async(req,res)=>{
   const {id,user}= req.body

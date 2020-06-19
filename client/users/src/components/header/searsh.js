@@ -15,7 +15,7 @@ import { SearchOutlined,UserOutlined,DownOutlined,UpOutlined } from '@ant-design
 import { getBooks } from "../../DAO/BooksDao";
 import { connect } from "react-redux";
 import Actions from '../../redux/actions'
-import { getFriends } from "../../DAO/userDao";
+import { getReaders } from "../../DAO/userDao";
 import { getCategories } from "../../DAO/categorieDao";
 
 const Searsh =(props)=>{
@@ -36,7 +36,7 @@ const Searsh =(props)=>{
   const onSearsh =async(event)=>{
     const cle = event.target.value
     const databook = await getBooks({page:0,size:2,cle})
-    const datauser = await getFriends({user,page:0,size:2,cle})
+    const datauser = await getReaders({user,page:0,size:2,cle})
     const datacategories = await getCategories({cle})
     setSearshValue(cle)
     if(!searshTab) setSearshTab(!searshTab)
@@ -115,7 +115,7 @@ export const SearshCategories =(props)=>{
                               {categorie}
                             </h4>
                             <Descriptions>
-                              <Descriptions.Item label='page'>{categories[categorie]}</Descriptions.Item>
+                              <Descriptions.Item label='Livres'>{categories[categorie]}</Descriptions.Item>
                             </Descriptions>
                          
                           </Col>

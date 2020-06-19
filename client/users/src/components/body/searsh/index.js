@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { SearshFriends, SearshBooks, SearshCategories } from "../../header/searsh"
 import { getBooks } from "../../../DAO/BooksDao"
-import { getFriends } from "../../../DAO/userDao"
+import {  getReaders } from "../../../DAO/userDao"
 import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { getCategories } from "../../../DAO/categorieDao"
@@ -22,7 +22,7 @@ const Searsh = (props)=>{
     const  user = props.user
     const getData=async(size1 ,size2)=>{
         const databook = await getBooks({page:0,size:size1,cle:id})
-        const datauser = await getFriends({user,page:0,size:size2,cle:id})
+        const datauser = await getReaders({user,page:0,size:size2,cle:id})
         const datacategories = await getCategories({cle:id})
         if(databook.docs.length <= 0 && datauser.docs.length<=0)
             setEmpty(true)

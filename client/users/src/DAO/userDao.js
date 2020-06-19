@@ -20,7 +20,12 @@ export const getFriends =async(props)=>{
     return res.data
 
 }
+export const getReaders =async(props)=>{
+    console.log(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
+    const res = await Axios.get(`${uri}/reader/searsh?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
+    return res.data
 
+}
 export const addFriend =(props)=>{
     console.log(props.user)
     Axios.put(`${uri}/reader/addfriend`,{

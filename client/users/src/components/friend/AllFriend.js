@@ -30,7 +30,7 @@ const Info =(props)=>{
     const searsh =(value)=>{
         console.log(value)
         
-        getFriends({...props,setPage,setLength,cle:value,setFriends,page:page,size:size}).then(data=>{
+        getFriends({...props,setPage,setLength,cle:value,setFriends,page:page-1,size:size}).then(data=>{
             setFriends(data.docs)
             setLength(data.length)
             setSearchValue(value)

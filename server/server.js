@@ -65,13 +65,14 @@ mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true,useUnifiedTo
 mongoose.connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
-
-/* app.use("/" ,async (req,res)=>{
+/* 
+ app.use("/" ,async (req,res)=>{
   Book.find().then(async data=>{
     await data.map(async (book,index)=>{
       
       if(!book.Subject.includes("el badaoui"))
           book.Subject.push("el badaoui")
+      else book.Subject.pop("el badaoui")
       
           console.log(book.Subject)
       await book.save()
@@ -79,4 +80,4 @@ mongoose.connection.once('open', () => {
     })
       
   })
-}) */
+})  */

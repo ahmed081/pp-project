@@ -35,7 +35,7 @@ Router.route('/').post(async (req, res) => {
   })
   Router.route('/lookforme').post(async (req, res) => {
     const {token}  = req.body || req.query
-    console.log({token})
+
     JWT.verify(token,process.env.SECRET,async(err,payload)=>{
       if(err)
       {
@@ -44,7 +44,6 @@ Router.route('/').post(async (req, res) => {
 
       }
       else {
-        console.log(payload)
         const {_id} = payload
         const reader= await Reader.findById(_id)
         reader.login.password = ""

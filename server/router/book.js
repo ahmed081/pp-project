@@ -44,13 +44,13 @@ Router.route('/categories').get(async (req,res)=>{
   let c =[]
    categories.map(categorie=>{
       c=[...c,
-        ...categorie.Subject
+        ...categorie.Subject.map(item=> item.toUpperCase())
       ]
       return null
     })
     if(cle && cle!=="")
     {
-          c=c.filter(item => item.includes(cle))
+          c=c.filter(item => item.includes(cle.toUpperCase()))
     }
     let initialValue = {}
     let reducer = function(tally, vote) {
