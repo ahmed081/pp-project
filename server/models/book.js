@@ -36,9 +36,15 @@ const bookSchema = new Schema({
     image:{
         type:String
     },
-    rating:{
-        type:Array()
-    }
+    rating: {
+        type : new Schema({
+            rate:{type:Number},
+            ratedby:{type:Array}
+        }, {
+            timestamps: true,
+          })
+        
+      }
 
 }, {
   timestamps: true,

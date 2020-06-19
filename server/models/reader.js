@@ -80,6 +80,9 @@ const readerSchema = new Schema({
     friends:{
         type:Array
     },
+    rating:{
+        type:Array
+    }
 }, {
   timestamps: true,
 });

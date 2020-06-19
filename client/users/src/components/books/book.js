@@ -17,7 +17,7 @@ const Book =(props)=>{
     }
     const book = props.book
     useEffect(()=>{
-        console.log(book)
+        console.log("rating ",book.rating.rate)
     },[])
     return (
         
@@ -32,7 +32,7 @@ const Book =(props)=>{
                     title={book.title}
                     description={<div>
                         <div style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}} >{book.description}</div>
-                        <Rate style={{width:"100%"}} disabled defaultValue={book.rate} /></div>} />
+                        <Rate style={{width:"100%"}} disabled defaultValue={book.rating.rate} /></div>} />
             </Card>
             </Link>                         
         </Col>

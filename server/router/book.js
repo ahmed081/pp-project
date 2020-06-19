@@ -2,7 +2,8 @@
 
 const Book = require('../models/book')
 const Router = require('express').Router();
-const Reader     = require('../models/reader')
+const Reader     = require('../models/reader');
+const { json } = require('body-parser');
 //edit 
 Router.route('/:id').put( async (req, res) => {
   //const {id,title,description,book_link,book_image,writers} = req.body;
@@ -44,13 +45,13 @@ Router.route('/categories').get(async (req,res)=>{
   let c =[]
    categories.map(categorie=>{
       c=[...c,
-        ...categorie.Subject.map(item=> item.toUpperCase())
+        ...categorie.Subject
       ]
       return null
     })
     if(cle && cle!=="")
     {
-          c=c.filter(item => item.includes(cle.toUpperCase()))
+          c=c.filter(item => item.toUpperCase().includes(cle.toUpperCase()))
     }
     let initialValue = {}
     let reducer = function(tally, vote) {
@@ -235,8 +236,11 @@ Router.route('/').get((req, res) => {
     if(!cle && !size && !page)
     {
       Book.find().then((data)=>{
+        
+       
+        console.log(data[0] instanceof Book)
         Book.find().count()
-          .then(count => res.json({length : count ,docs:books}))
+          .then(count => res.json({length : count ,docs:data}))
           .catch(err => res.status(400).json('Error: ' + err));
       }).catch(err => res.status(400).json('Error: ' + err));
       return ;
@@ -254,6 +258,47 @@ Router.route('/').get((req, res) => {
           .catch(err => res.status(400).json('Error: ' + err));
       })
       .catch(err => res.status(400).json('Error: ' + err));
+});
+
+//rating book 
+Router.route('/rate').put(async(req, res) => {
+  
+  const {idBook , id,rate,comment} = req.body
+  const reader = await Reader.findById(id)
+  const book = await Book.findById(idBook,{rating:1})
+  const userRating = {idBook,comment,rate} 
+  const rating = reader.rating.find(item=> idBook === item.idBook )
+  if(rating)
+  {
+    reader.rating.pop(rating)
+    reader.rating.push(userRating)
+    if(reader instanceof Reader) {
+      reader.save()
+    }else res.status(400),json("error")
+  }else {
+    
+    book.ratedby.puch(id)
+    if(book instanceof Book) {  
+      reader.rating.push(userRating)
+      reader.save()
+    }else res.status(400),json("error")
+  }
+
+  const readersRatedBook = await Reader.find({"rating.idBook":{$in:book.rating.ratedby}})
+  let rateMe = (array) => array.reduce((a, b) => a + b) / array.length;
+  const rates = readersRatedBook.map(r =>{
+
+    return r.rating.rate
+  })
+  book.rating.rate =rateMe(rates)
+  if(book instanceof Book)
+  {
+    book.save()
+    res.json({rate : book.rating.rate})
+  }
+  else res.status(400),json("error")
+  
+  
 });
 //count numbre of books
 Router.route('/count').get((req, res) => {
