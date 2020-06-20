@@ -19,13 +19,29 @@ import {image} from "../../data"
 import Categorie from './categories';
 import { connect } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
-import { getOne,  toggle, getByCategories} from '../../DAO/BooksDao';
+import { getOne,  toggle, getByCategories, rateMe} from '../../DAO/BooksDao';
+import user from '../header/user';
+import { configConsumerProps } from 'antd/lib/config-provider';
 const { TabPane } = Tabs;
 const Left = (props)=>{
     const book = props.book
     useEffect(()=>{
         console.log("book book => ",book)
     },[])
+    const rate = (value)=>{
+        
+        rateMe({
+            idBook:book._id,
+            user:props.user,
+            comment:"good",
+            rate:value
+        }).then(data=>{
+            console.log(data)
+        }).catch(err=>{
+            console.log("err",err)
+        })
+        console.log({value,book})
+    }
     return(
         <div>
             <div>
@@ -37,7 +53,7 @@ const Left = (props)=>{
                 >
                     <Card.Meta 
                         title={book.title}
-                        description={<div><Rate  defaultValue={book.rate} /></div>} />
+                        description={<div><Rate  defaultValue={book.rating.rate} onChange={rate} /></div>} />
                 </Card>
                 
             </div>
@@ -208,7 +224,7 @@ const Recommendation=(props)=>{
                     return(
                         <Col span={6} >
                             <Link onClick={()=>{window.location=`/books/${book._id}`}}>
-                            <Left book={book}/>
+                            <Left  book={book}/>
                             </Link>
                         </Col>
                     )
@@ -239,7 +255,7 @@ const BookPage =(props)=>{
                 <Col  span ={24}>
                     <Row gutter={[8, 8]}>
                         <Col  xl={{...size(7,1)}} lg={{...size(7,1)}} md={{...size(9,1)}} xs={{...size(20,1)}} xs={{...size(20,1)}}  >
-                            <Left book ={book}/>
+                            <Left {...props} book ={book}/>
                         </Col>
                         <Col xl={{...size(2)}} lg={{...size(2)}} md={{...size(2)}} sm={{...size(2)}} xs={{...size(1)}}>
                                 <Buttons {...props} book={book}/>
@@ -252,7 +268,7 @@ const BookPage =(props)=>{
                                     <Description description={book.description} />
                                 </TabPane>   
                                 <TabPane tab="avis" key="2">
-                                    <Avie/>
+                                    <Avie book={book}/>
                                 </TabPane>  
                             </Tabs>
                                 

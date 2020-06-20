@@ -71,3 +71,19 @@ export const getByCategories=async(props)=>{
         
     
 }
+export const rateMe=async (props)=>{
+    console.log({
+        idBook:props.idBook,
+        id:props.user._id,
+        comment:props.comment,
+        rate:props.rate
+    })
+    const res = await Axios.put(`${uri}/book/rate`,{
+        idBook:props.idBook,
+        id:props.user._id,
+        comment:props.comment,
+        rate:props.rate
+    })
+
+    return res
+}
