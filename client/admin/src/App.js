@@ -14,7 +14,6 @@ import {
 function App(props) {
   useEffect(() => {
 
-    console.log("ppppppppppppppppppppppp ",props)
     }, [])
   return (
     <div className="App">

@@ -10,6 +10,7 @@ import UserManagement from "../readers/userManagement"
  /* import Home from "./Home"*/
 import claimsManagement from "../claims/claimsManagement" 
 import App from '../../App'
+import categorieManagement from '../categories/categorieManagement';
 class User extends React.Component { 
   render() {
     
@@ -20,6 +21,7 @@ class User extends React.Component {
             <Route path="/usersManagement"   component={UserManagement}/>
             <Route path="/claimsManagement"  component={claimsManagement}/>
             <Route path="/booksManagement" component={BookManagement}/>
+            <Route path="/categorieManagement" component={categorieManagement}/>
           </Switch>
             </div>
 

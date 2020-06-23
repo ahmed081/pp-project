@@ -38,18 +38,7 @@ const BookManagement = (props)=>{
       console.log("props books : ",props)
       props.bookCurrentPage(0)
       BooksDao.getBooksByPage(0,props)
-      /* 
-        Axios.get(`http://localhost:3030/book?token=${props.token}`)
-        .then(res=>{
-          console.log(res)
-          res.data.docs.map((item,index) =>{
-            props.addBook({...item,key:index})
-            props.booksLenght(res.data.length)
-            return null
-        })
-        }).catch(err=>{
-          console.log(err)
-        }) */
+
         props.setTitle(Const.BOOKSUI_TITLE)
         }, [])
     return (
