@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Button,Modal} from 'antd'
+import {Button,Modal, Input} from 'antd'
 import {connect} from 'react-redux'
 import { Table, Radio, Divider,Select } from 'antd';
 import { Link,useLocation } from 'react-router-dom'
@@ -105,6 +105,7 @@ const AllCategories = (props)=>{
                     onClick={()=>{action ==="Supprimer" ?selectedRows.map(async book => await BooksDao.deleteBook(props.token,book,props)):console.log("ssss")}}>
                     executer 
                 </Button>
+                <Input.Searsh/>
                 <Table 
                         pagination={{defaultCurrent:props.page+1,total:props.length,onChange:onChange}}
                         {...{loading:loading}}
