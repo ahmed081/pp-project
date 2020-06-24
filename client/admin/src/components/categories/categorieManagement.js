@@ -13,7 +13,7 @@ const CategorieManagemnet = (props)=>{
 
     
     useEffect(() => {
-    
+        props.setTitle("Gestion des catégories")
         }, [])
     return (
         <div>

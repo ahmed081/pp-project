@@ -7,7 +7,7 @@ const getBooksByPage =(page,props)=>{
   const {token} = props
     console.log(uri)
     console.log(props.token)
-    Axios.get(`${url}/book/${page}/${size}?token=${token}`)
+    Axios.get(`${url}/book?page=${page}&size=${size}&cle=e`)
     
         .then(res=>{
 

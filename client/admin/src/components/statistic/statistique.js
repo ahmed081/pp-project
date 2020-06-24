@@ -1,9 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import { Select, Row, Col } from 'antd'
+import Actions from '../../redux/actions'
+import { connect } from 'react-redux'
 
 const {Option} = Select
 const Statistique = (props)=>{
-    
+    useEffect(()=>{
+        props.setTitle("statistique")
+
+    },[])
     const  handleChange =(value)=> {
         console.log(`selected ${value}`);
       }
@@ -38,7 +43,19 @@ const Statistique = (props)=>{
 
 
 
-export default  Statistique 
+const mapSotre =(store)=>{
+    const {BooksManagemntReducer} = store
+    const {TokenReduicer} = store
+    const {BooksPageReduicer} = store
+    return {
+      books : BooksManagemntReducer,
+      token : TokenReduicer,
+      page : BooksPageReduicer
+    }
+}
+
+export default connect(mapSotre,{...Actions}) (Statistique);
+ 
 
 
 
