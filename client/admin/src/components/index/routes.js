@@ -11,6 +11,7 @@ import UserManagement from "../readers/userManagement"
 import claimsManagement from "../claims/claimsManagement" 
 import App from '../../App'
 import categorieManagement from '../categories/categorieManagement';
+import Statistique from '../statistic/statistique';
 class User extends React.Component { 
   render() {
     
@@ -21,6 +22,7 @@ class User extends React.Component {
             <Route path="/usersManagement"   component={UserManagement}/>
             <Route path="/claimsManagement"  component={claimsManagement}/>
             <Route path="/booksManagement" component={BookManagement}/>
+            <Route path="/statistique" component={Statistique}/>
             <Route path="/categorieManagement" component={categorieManagement}/>
           </Switch>
             </div>

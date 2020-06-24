@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from 'react'
-import {Button,Modal, Input} from 'antd'
+import {Button,Modal, Input, Badge} from 'antd'
 import {connect} from 'react-redux'
 import { Table, Radio, Divider,Select } from 'antd';
 import { Link,useLocation } from 'react-router-dom'
 import Actions from '../../redux/actions'
 import BooksDao from '../../dao/booksDao'
+import { getCategorie } from '../../dao/categoriesDao';
+import categorie from './categorie';
 
 
 
@@ -33,11 +35,13 @@ const AllCategories = (props)=>{
   const columns = [
     {
       title: 'Catégorie',
-      dataIndex: 'ISBN',
+      dataIndex: 'categorie',
       render: text => <a>{text}</a>,
     },
     {
-      title: 'lirves',
+      title: 'nombres des lirves',
+      dataIndex: 'nbr',
+      render: text =><Badge  count={text} />,
     },
     {
         title: 'Action',
@@ -73,10 +77,11 @@ const AllCategories = (props)=>{
     useEffect(() => {
         setTimeout(() => {
           setLoading(false)
+          setCategories(getCategorie(props))
           console.log(props.books)
         }, 500);
         console.log("all book : ", props)
-        }, [])
+    }, [])
     function onChange(pageNumber) {
       setLoading(true)
       setTimeout(() => {
@@ -94,7 +99,7 @@ const AllCategories = (props)=>{
     return (
         <div>
             <SuppModel handleCancel = {handleCancel} handleOk={handleOk} visible ={visible} book={book} />
-            <Button type="dashed" style ={{float: "right",top: "18px", fontWeight: "bold"}} ><Link to ='booksManagement/add'>ajouter nouveau</Link></Button>
+            <Button type="dashed" style ={{float: "right",top: "18px", fontWeight: "bold"}} ><Link to ='categorieManagement/add'>ajouter nouveau</Link></Button>
             <div style={{position: "relative",top: "40px"}}>
                 <Select defaultValue="action" style={{ width: 120 }} onChange={handleChange}>
                     <Option value="Supprimer">Supprimer</Option>
@@ -105,7 +110,10 @@ const AllCategories = (props)=>{
                     onClick={()=>{action ==="Supprimer" ?selectedRows.map(async book => await BooksDao.deleteBook(props.token,book,props)):console.log("ssss")}}>
                     executer 
                 </Button>
-                <Input.Searsh/>
+                <div>
+                <Input.Search/>
+                </div>
+                
                 <Table 
                         pagination={{defaultCurrent:props.page+1,total:props.length,onChange:onChange}}
                         {...{loading:loading}}
@@ -113,7 +121,7 @@ const AllCategories = (props)=>{
                          ...rowSelection,
                         }}
                         columns={columns}
-                        dataSource={props.books}
+                        dataSource={categoires}
                 />
             </div>
             
