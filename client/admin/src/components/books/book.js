@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { Link,useLocation } from 'react-router-dom'
+import { Link,useLocation, useParams } from 'react-router-dom'
 import {connect} from "react-redux"
 import {
     Form,
@@ -9,7 +9,12 @@ import {
     Tooltip,
     Tag ,
     Button,
-    Layout 
+    Layout, 
+    Empty,
+    Spin,
+    Row,
+    Col,
+    Rate
   } from 'antd';
 import langages from '../../data/langages'
 import countries from '../../data/countries'
@@ -20,6 +25,7 @@ import Axios from "axios"
 import BooksDao from '../../dao/booksDao'
 const Book = (props)=>{
     let location =  useLocation();
+    const [book,setBook]= useState()
     let action = useLocation().pathname.split('/')[2]
     const [header,setHeader]= useState("Ajouter un Livre")
     const [title,setTitle]= useState("")
@@ -31,20 +37,26 @@ const Book = (props)=>{
     const [country, setCountry]=useState([])
     const [subject, setSubject]=useState([])
     const [file, setfile]=useState()
+    const {id}=useParams()
     useEffect(() => {
-        
+        console.log(id)
         if(action !== "add")
         {
-            console.log("book inso :" ,props.books[parseInt(action)].pages)
-            setHeader("Afficher un livre ")
-            setTitle(props.books[parseInt(action)].title)
-            setISBN(props.books[parseInt(action)].ISBN)
-            setLangage(props.books[parseInt(action)].langage)
-            setDescription(props.books[parseInt(action)].description)
-            setPages(props.books[parseInt(action)].pages)
-            setAuthors(props.books[parseInt(action)].authors)
-            setCountry(props.books[parseInt(action)].country)
-            setSubject(props.books[parseInt(action)].subject)
+            BooksDao.getOne({id}).then(book=>{
+                setBook(book)
+            
+                
+                    setHeader("Afficher un livre ")
+                    setTitle(book.title)
+                    setISBN(book.ISBN)
+                    setLangage(book.langage)
+                    setDescription(book.description)
+                    setPages(book.pages)
+                    setAuthors(book.authors)
+                    setCountry(book.country)
+                    setSubject(book.Subject)
+            
+            }) 
         }
         }, [])
     const uplaodData = {
@@ -78,7 +90,7 @@ const Book = (props)=>{
                 })
             }else{
 
-                const {_id} = props.books[parseInt(action)]
+                const {_id} = book
                 BooksDao.editBook(
                         props.token,
                         {
@@ -100,85 +112,103 @@ const Book = (props)=>{
     return (
         
         <div>
-            <h1>{header}</h1>
-            <Form
-            
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 14 }}
-                layout="horizontal"
-        
-            >
+            <div style={{padding:"18px 13px"}}>
+                <center>
+                    <h1>{header}</h1>
+                </center>
                 
+            </div>
+            {
+                action!=="add" && !book ? <div style={{padding:"100px 16px"}} ><center><Spin/></center></div>:
+            <Row>
+                <Col span={16}>
+                    <Form
                 
-                <Form.Item label="Titre">
-                    <Input value={title} onChange={(event)=>{setTitle(event.target.value)}} placeholder="Title de livre"/>
-                </Form.Item>
-                <Form.Item label="ISBN">
-                    <Input value={ISBN} onChange={(event)=>{setISBN(event.target.value)}} placeholder="ISBN de livre"/>
-                </Form.Item>
-                <Form.Item label="Desription">
-                    <Input.TextArea placeholder="desription" allowClear value={description}  onChange={value => setDescription(value.target.value)} />
-                </Form.Item>
-                <Form.Item label="Nombre des pages">
-                    <InputNumber min={1} value={pages} onChange={(value)=> setPages(value)} />
-                </Form.Item>
-               
-                <Form.Item label="Langage">
-                <Select defaultValue="Langage" onChange={(value)=>{setLangage(value)}}>
-                    {langages.map(({name,nativeName}) =>{
-                   
-                        return <Select.Option value={name}>{nativeName}</Select.Option>
-                    })}
+                        labelCol={{ span: 4 }}
+                        wrapperCol={{ span: 20 }}
+                        layout="horizontal"
+                
+                    >
+                        
+                        
+                        <Form.Item label="Titre">
+                            <Input value={title} onChange={(event)=>{setTitle(event.target.value)}} placeholder="Title de livre"/>
+                        </Form.Item>
+                        <Form.Item label="ISBN">
+                            <Input value={ISBN} onChange={(event)=>{setISBN(event.target.value)}} placeholder="ISBN de livre"/>
+                        </Form.Item>
+                        <Form.Item label="Desription">
+                            <Input.TextArea placeholder="desription" allowClear value={description} autoSize={ {minRows: 2, maxRows: 6 }} onChange={value => setDescription(value.target.value)} />
+                        </Form.Item>
+                        <Form.Item label="Nombre des pages">
+                            <InputNumber min={1} value={pages} onChange={(value)=> setPages(value)} />
+                        </Form.Item>
                     
-                </Select>
-                </Form.Item>
-                <Form.Item label="Auteurs">
-                <Select mode="tags" value={authors} onChange={(value)=>{setAuthors([...value])}}>
-                </Select>
+                        <Form.Item label="Langage">
+                        <Select defaultValue="Langage" value={langage} onChange={(value)=>{setLangage(value)}}>
+                            {langages.map(({avb,nativeName}) =>{
+                        
+                                return <Select.Option value={avb}>{nativeName}</Select.Option>
+                            })}
+                            
+                        </Select>
+                        </Form.Item>
+                        <Form.Item label="Auteurs">
+                        <Select mode="tags" value={authors} onChange={(value)=>{setAuthors([...value])}}>
+                        </Select>
 
 
-                </Form.Item>
-                <Form.Item label="Pays">
-                <Select mode="tags" value={country} onChange={(value)=>{setCountry([...value])}}>
-                    {Object.keys(countrie).map((country,key) =>{
-                     
-                        return <Select.Option value={countrie[country]}  key ={key}>{countrie[country]}</Select.Option>
-                    })}
-                    
-                </Select>
-                       
-                </Form.Item>
-                <Form.Item label="Sujets">
-                <Select mode="tags" value={subject} onChange={(value)=>{setSubject([...value])}}>
-                </Select>
+                        </Form.Item>
+                        <Form.Item label="Pays">
+                        <Select mode="tags" value={country} onChange={(value)=>{setCountry([...value])}}>
+                            {Object.keys(countrie).map((country,key) =>{
+                            
+                                return <Select.Option value={countrie[country]}  key ={key}>{countrie[country]}</Select.Option>
+                            })}
+                            
+                        </Select>
+                            
+                        </Form.Item>
+                        <Form.Item label="Sujets">
+                        <Select mode="tags" value={subject} onChange={(value)=>{setSubject([...value])}}>
+                        </Select>
 
 
-                </Form.Item>
-                
-                {action === "55698" ? 
-                    <Form.Item label="Téléchargement de livre">
-                        <Upload {...uplaodData}/>
-                    </Form.Item>:
-                    null
-                }
-                {action === "55698" ? 
-                    <Form.Item label="show state">
-                    <Button onClick={()=>console.log('file : ',file)}>show state</Button>
-                    </Form.Item>:
-                    null
-                }
-                <Form.Item label =" " onClick = {onSubmit}>
-                    <Button type="primary">Submit</Button>
-                    </Form.Item>
-            </Form>
+                        </Form.Item>
+                        
+                        {action === "55698" ? 
+                            <Form.Item label="Téléchargement de livre">
+                                <Upload {...uplaodData}/>
+                            </Form.Item>:
+                            null
+                        }
+                        {action === "55698" ? 
+                            <Form.Item label="show state">
+                            <Button onClick={()=>console.log('file : ',file)}>show state</Button>
+                            </Form.Item>:
+                            null
+                        }
+                        <Form.Item label =" " onClick = {onSubmit}>
+                            <Button type="primary">Modifier</Button>
+                            </Form.Item>
+                    </Form>
+                </Col>
+                <Col offset={2} span={6}>
+                    <center>
+                        <img width="250px" src={book.image}/>
+                        <center><Rate disabled defaultValue={book.rating.rate} /></center>
+                        
+                    </center>
+                </Col>
+            </Row>
+            }
+
         </div>
     )
 }
 const mapSotre =(store)=>{
-    const { BooksManagemntReducer} = store
     const { TokenReduicer} = store
     return {
-        books : BooksManagemntReducer,
         token : TokenReduicer,
     }
 }

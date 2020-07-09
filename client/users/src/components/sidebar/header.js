@@ -6,6 +6,7 @@ import {
   } from 'antd';
 import {UserOutlined, SearchOutlined } from '@ant-design/icons';
 import logo from '../../images/logo.jpeg'
+import { uri } from "../../DAO/config";
 
 const size =(span , offset=0)=>{
   return {span , offset}
@@ -20,7 +21,7 @@ const Header =()=>{
         
       <div  >
          <div style={SideBarStyle.AvatarIcon} >
-          <Avatar size={90} shape="square" src={logo} />
+          <Avatar size={90} shape="square" src={`${uri}/image/logo`} />
          </div>
           
           <h3><center>Mylib</center></h3>

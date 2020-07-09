@@ -16,9 +16,12 @@ const bodyParser = require('body-parser');
 
 
 //import routers
-const ReaderAPI  = require("./router/reader")
-const BookAPI    = require("./router/book")
-const login      = require('./router/login')
+const ReaderAPI      = require("./router/reader")
+const BookAPI        = require("./router/book")
+const ClaimAPI       = require("./router/claim")
+const login          = require('./router/login')
+const SubscribeAPI   = require('./router/abonnement')
+
 const AutorisationMiddleware = require('./router/AutorisationMiddleware')
 
 
@@ -55,6 +58,8 @@ app.use('/image',express.static('./image'))
 app.use('/login', login)
 app.use("/book",BookAPI)
 app.use("/reader",ReaderAPI)
+app.use("/subscribe",SubscribeAPI)
+app.use("/claim",ClaimAPI)
 const Book = require('./models/book')
 
 
@@ -65,19 +70,11 @@ mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true,useUnifiedTo
 mongoose.connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
-/* 
- app.use("/" ,async (req,res)=>{
-  Book.find().then(async data=>{
-    await data.map(async (book,index)=>{
-      
-      if(!book.Subject.includes("el badaoui"))
-          book.Subject.push("el badaoui")
-      else book.Subject.pop("el badaoui")
-      
-          console.log(book.Subject)
-      await book.save()
-          console.log(book instanceof Book)
-    })
-      
-  })
-})  */
+
+ app.use("/image/:image" ,async (req,res)=>{
+   const {image} = req.params
+   res.sendFile(`G:/cours/projets/Books/server/image/${image}.jpg`)
+
+
+})  
+ 

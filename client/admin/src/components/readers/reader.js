@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from 'react'
-import { Link,useLocation } from 'react-router-dom'
+import { Link,useLocation, useParams } from 'react-router-dom'
 import {connect} from "react-redux"
 import moment from 'moment';
+import readerShape from "../../data/userShape.json"
 import {
     Form,
     Input,
@@ -11,7 +12,13 @@ import {
     Tag ,
     DatePicker ,
     Button,
-    Layout 
+    Layout, 
+    Spin,
+    Row,
+    Col,
+    Descriptions,
+    Badge,
+    Avatar
   } from 'antd';
 import langages from '../../data/langages'
 import countries from '../../data/countries'
@@ -20,32 +27,25 @@ import countrie from '../../data/countries';
 import Upload from './uplaod'
 import Axios from "axios"
 import BooksDao from '../../dao/booksDao'
+import { getOne, editReader,addReader } from '../../dao/readerDao';
+
 const Reader = (props)=>{
     let location =  useLocation();
     let action = useLocation().pathname.split('/')[2]
-    const [header,setHeader]= useState("Ajouter un Livre")
-    const [name,setName]= useState({fist:"",last:""})
-    const [email,setEmail]= useState("")
-    const [mobile,setMobile]= useState("")
-    const [gender,setGender]= useState("Sexe")
-    const [login,setLogin]= useState({username:"",password:""})
-    const [dob,setDob]= useState({date:"",age:""})
-
+    const [header,setHeader]= useState("Ajouter un Lecteur")
+    const [reader,setReader]= useState()
+    const {id}=useParams()
     useEffect(() => {
         
         if(action !== "add")
         {
-            const reader = props.readers[parseInt(action)]
-            console.log("reader info :" ,props.readers[parseInt(action)])
-            setHeader("Afficher un reader ")
-            console.log(props)
-            setName({fist:reader.name.fist,last:reader.name.last})
-            setEmail(reader.email)
-            setMobile(reader.mobile)
-            setGender(reader.gender)
-            setLogin({username:reader.login.username,password:reader.login.password})
-            setDob({date:reader.dob.date,age:reader.dob.age})
+            getOne({id}).then(reader=>{
+                setReader(reader)
+                console.log(reader)
+            })
+            
         }
+        else setReader(readerShape)
         
         }, [])
     const uplaodData = {
@@ -62,75 +62,137 @@ const Reader = (props)=>{
             }
         },
         };
-        const onSubmit =()=>{
+        const onSubmit =async()=>{
             if(action === "add")
             {
+                console.log("dddddaz")
 
+                const R = await addReader({reader:reader})
+                if(R)
+                    console.log("daz")
+                else console.log("!daz")
             }else{
-                
+                const R = await editReader({reader:reader})
+                if(R)
+                    window.location = "/usersManagement"
+                else console.log("!daz")
             }
             
         }
     return (
         
         <div>
-            <h1>{header}</h1>
-            <Form
-            
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 14 }}
-                layout="horizontal"
-        
-            >
-                
-                
-                <Form.Item label="Nom Complet">
-                    <Input value={name.fist} onChange={(event)=>{setName({...name,fist :event.target.value})}} placeholder="prénom"/>
-                    <Input value={name.last} onChange={(event)=>{setName({...name,last :event.target.value})}} placeholder="nom"/>
-                </Form.Item>
-                <Form.Item label="Date de naissance">
-                    <DatePicker 
-                        defaultValue={moment(dob.date, 'YYYY/MM/DD')} 
-                        format={'YYYY/MM/DD'}
-                        onChange={(date, dateString)=>{
-                            console.log((new Date()), Date(dateString));
-                            const d = new Date(dateString)
-                            console.log(d.getMonth())
-                            const nd = Date.now()
-                            const calc_age = new Date(nd - d.getTime())
-                            setDob({date : d.getFullYear()+"/"+parseInt(d.getMonth()+1)+"/"+d.getDate() , age : Math.abs(calc_age.getUTCFullYear() - 1970)+""})
-                        }} 
-                    />
-                </Form.Item>
-                <Form.Item label="Sexe">
-                    <Select value={gender} onChange={(value)=>{setGender(value)}}>
-                        <Select.Option value="M">homme</Select.Option>
-                        <Select.Option value="F">femme</Select.Option>
-                    </Select>
-                </Form.Item>
-                <Form.Item label="email">
-                    <Input value={email} onChange={(event)=>{setEmail(event.target.value)}} placeholder="Email"/>
-                </Form.Item>
-                
-                <Form.Item label="Login">
-                    <Input value={login.username} onChange={(event)=>{setLogin({...login,username :event.target.value})}} placeholder="user name"/>
-                    <Input value={login.password} onChange={(event)=>{setLogin({...login,password :event.target.value})}} placeholder="password"/>
-                </Form.Item>
-
-                <Form.Item label="Téléphone">
-                    <Input value={mobile} onChange={(event)=>{setMobile(event.target.value)}} placeholder="Mobile"/>
-                </Form.Item>
-                
+            <div style={{padding:"15px 1px"}}>
+                <center>
+                    <h1>{header}</h1>
+                </center>
+            </div>
+            <div>
+                {
+                    !reader?<div style={{padding:"100px 1px"}}><center><Spin/></center></div>:
+                    <Row>
+                        <Col offset={3} span={14} >
+                            <Form
+                    
+                                labelCol={{ span: 4 }}
+                                wrapperCol={{ span: 20 }}
+                                layout="horizontal"
                         
-                
-                
-                <Form.Item label="show state">
-                    <Button onClick={()=>console.log('age : ',dob.date)}>show state</Button>
-                </Form.Item>
-                <Form.Item label =" " onClick = {onSubmit}>
-                    <Button type="primary">Submit</Button>
-                </Form.Item>
-            </Form>
+                            >
+                                
+                                
+                                <Form.Item label="Nom Complet">
+                                    <Input value={reader.name.first} onChange={(event)=>{
+                                        const name = {
+                                            ...reader.name,
+                                            first:event.target.value
+                                        }
+                                        setReader({...reader,name})
+                                    }} placeholder="prénom"/>
+                                    <Input value={reader.name.last} onChange={(event)=>{
+                                        const name = {
+                                            ...reader.name,
+                                            last:event.target.value
+                                        }
+                                        setReader({...reader,name})
+                                    }} placeholder="nom"/>
+                                </Form.Item> 
+                                <Form.Item label="Date de naissance">
+                                    <DatePicker 
+                                        defaultValue={reader.dob.date?moment(reader.dob.date, 'YYYY/MM/DD'):""} 
+                                        format={'YYYY/MM/DD'}
+                                        onChange={(date, dateString)=>{
+                                            const dob ={
+                                                date: date,
+                                                age:(new Date()).getFullYear() - (new Date(dateString)).getFullYear()
+                                            }
+                                            const d = new Date()
+                                            console.log(d.getFullYear())
+                                            setReader({
+                                                ...reader,
+                                                dob
+                                            })
+                                        // console.log((new Date()), Date(dateString));
+                                        }} 
+                                    />
+                                </Form.Item>
+                                <Form.Item label="Sexe">
+                                    <Select value={reader.gender} onChange={(value)=>{
+                                        setReader({
+                                            ...reader,
+                                            gender:value
+                                        })
+                                    }}>
+                                        <Select.Option value="M">homme</Select.Option>
+                                        <Select.Option value="F">femme</Select.Option>
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item label="email">
+                                    <Input value={reader.email} onChange={(event)=>{
+                                        setReader({
+                                            ...reader,
+                                            email:event.target.value
+                                        })
+                                    }} placeholder="Email"/>
+                                </Form.Item>
+                                <Form.Item label="Téléphone">
+                                    <Input value={reader.mobile} onChange={(event)=>{
+                                        setReader({
+                                            ...reader,
+                                            mobile:event.target.value
+                                        })
+                                    }} placeholder="Mobile"/>
+                                </Form.Item>
+                                
+                                        
+                                
+                                
+                                
+                                <Form.Item label =" " onClick = {()=>onSubmit()}>
+                                    <Button type="primary">Modifier</Button>
+                                </Form.Item>
+                            </Form>
+                        </Col>
+                        <Col offset={1} span={6}>
+                            <div>
+                                <center>
+                                    <Avatar size={200} shape="square" src={reader.picture.large} />
+                                <center style={{padding:"12px 1px"}}>
+                                    <Button>
+                                        changer image
+                                    </Button>
+                                </center>
+                                <div style={{padding:"12px  30px"}}>
+                                    <Descriptions>
+                                        <Descriptions.Item label="Abonnée"><Badge status={reader.subscribe?"success":"error"} /></Descriptions.Item>
+                                    </Descriptions>
+                                </div>
+                                </center>
+                            </div>
+                        </Col>
+                    </Row>
+                }
+            </div>
         </div>
     )
 }

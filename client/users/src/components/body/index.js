@@ -18,7 +18,7 @@ import Context from "./profile/Context"
 import ContactUs from "./contactezNous/index";
 import Books from "../books/index";
 import Friend from "../friend";
-import Lire from "./lire/lire";
+import Lire from "./lire/index";
 import AllFriend from "../friend/AllFriend";
 import { BrowserRouter, Route, Switch, Redirect, useLocation, Link } from "react-router-dom";
 import Book from "../books/book";
@@ -29,6 +29,7 @@ import Categorie from "../books/Categorie";
 import Searsh from './searsh'
 import { FacebookOutlined, InstagramOutlined, GoogleOutlined, CopyrightCircleOutlined } from "@ant-design/icons";
 import Categories from './categories'
+import Abonnment from "../abonnement";
 
 const { TextArea } = Input;
 const { Header, Content,Footer} = Layout;
@@ -58,6 +59,7 @@ const Body =(props)=>{
                             <Route path='/Favorie' exact render ={()=><Context size={8} context={"favorite"} title={"Mes favoris"}/>}/>   
                             <Route path='/Lecture' exact render ={()=><Context size={8} context={"lectures"} title={"J'ai lu ....."}/>}/> 
                             <Route path ='/profile' exact component={Profile} />
+                            <Route path='/abonnement' component={Abonnment} />
                             <Route path ='/encours' exact render ={()=><Context size={8} context={"encours"} title={"je suis en cours de lire...."}/>}/> 
                             <Route  path='/books/categories' exact  component={Categories}/>
                             <Route  path='/books/categories/:id' exact  component={Categorie}/>

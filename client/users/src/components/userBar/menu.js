@@ -14,6 +14,7 @@ const Header =(props)=>{
         <Link onClick={()=>window.location = `/LirePlusTard`} > à lire plus tard </Link>
         <Link onClick={()=>window.location = `/Favorie`} > Mes favoris</Link>
         <Link to='/amis' > Les amis</Link>
+        <Link to="/abonnement"> abonnement</Link>
         <center>
           <Link onClick={()=>{
             props.login()

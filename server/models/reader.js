@@ -8,6 +8,10 @@ const readerSchema = new Schema({
         required : true,
         trim:true
    },
+   subscribe:{
+       type:Boolean,
+       default:false
+   },
     name:{
         type: new Schema({
             first:{

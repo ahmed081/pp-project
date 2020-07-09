@@ -118,7 +118,7 @@ export const AddFriend =(props)=>{
     return(
         <Col xl={{...size(6,18)}} md={{...size(6,18)}} sm={{...size(8,16)}} xs={{...size(6,14)}}>
             {
-                isfriend?<Button type='primary'  icon={<CheckOutlined />}>ne plus suivre</Button>:
+                isfriend?<Button type='primary' onClick={()=>toggleFriend()}   icon={<CheckOutlined />}>ne plus suivre</Button>:
                 <Button type='ghost' onClick={()=>toggleFriend()} icon={<PlusOutlined />}>Suivre</Button>
             }
 

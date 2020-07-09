@@ -15,32 +15,20 @@ const BookManagement = (props)=>{
     let location = useLocation()
     
     useEffect(() => {
-      data.map(reader =>{
-        props.addReader(reader)
-      })
-      
-      //props.bookCurrentPage(0)
-      //BooksDao.getBooksByPage(0,props)
-  
       props.setTitle(Const.USERSUI_TITLE)
 
     }, [])
     return (
         <div>
-            
             <Route path="/usersManagement" exact component={AllReader}/>
             <Route path="/usersManagement/:id" component={reader}/>
         </div>
     )
 }
 const mapSotre =(store)=>{
-    const {ReadersManagemntReducer} = store
     const {TokenReduicer} = store
-    const {ReadersPageReduicer} = store
     return {
-      readers : ReadersManagemntReducer,
       token : TokenReduicer,
-      page : ReadersPageReduicer
     }
 }
 

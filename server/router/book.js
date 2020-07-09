@@ -7,20 +7,22 @@ const { json } = require('body-parser');
 Router.route('/rrr').put((req, res) => {
   res.json('ahmed')
 })
+const bookDao = require('../dao/bookDao')
+//read book
+Router.route('/read/:book').get( async (req, res)=>{
+  const {book} = req.params
+  res.sendFile("G:/cours/projets/Books/server/"+book)
+})
 //edit 
 
-Router.route('/group').post(  (req, res)=>{
+Router.route('/group').post( async (req, res)=>{
   const {ids}=req.body
   const {page,size} = req.query
-  Book.find({_id :{$in : ids}}).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-  .then((data)=>{
-    Book.find({_id :{$in : ids}}).count()
-    .then(count=>{
-
-      res.json({length : count,page:page,size:size , docs:data})
-    })
-    
-  })
+  const query = {_id :{$in : ids}}
+  const books = await bookDao.find({query:query,size:size,page:page})
+  const length = await bookDao.count()
+  if(books) res.json({length ,page,size , docs:books})
+  else res.status(400).send("Error .....")
 
 })
 
@@ -58,120 +60,92 @@ Router.route('/categories').get(async (req,res)=>{
     
   res.json(result)
 })
-Router.route('/categories/:categorie').get((req,res)=>{
+Router.route('/categories/:categorie').get(async(req,res)=>{
   const {categorie} =req.params
   const {id,page,size,cle}=req.query
-
   let query ={Subject : {$in : [categorie]}}
-  if(cle && cle !== '')
-    {
-      query = {$and : [query , {title:{$regex : cle , $options: 'i'}}]}
-    }
-    
-  Book.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-  .then(data =>{
-    Book.find(query).count()
-    .then(count =>{
-      res.json({categorie:categorie,cle:cle,page:page,size:size,length:count,docs :data})
-    })
-    
-  })
+  const books = await bookDao.find({query:query,size:size,page:page,cle:cle})
+  const length = await bookDao.count(query)
+  if(books) res.json({length ,page,size ,cle, docs:books})
+  else res.status(400).send("Error .....")
+  
 })
 //get favorites books
-Router.route('/favorite').get(  (req, res) => {
+Router.route('/favorite').get( async (req, res) => {
   const {id,page,size,cle}=req.query
+  if(!id)
+  {
+    res.status(400).send("id user needed.....")
+    return 
+  } 
+  const reader = await Reader.findById(id,{"favorites":1})
+  const favorite = reader.favorites
+  let query = { _id: { $in: favorite } }
+  const books = await bookDao.find({cle,query,page,size,})
+  const length = await bookDao.count(query)
+  if(books) 
+    res.json({length ,page,size ,cle, docs:books})
+  else 
+    res.status(400).send("Error .....")
+    
 
-  Reader.findById(id,{"favorites":1})
-  .then(data =>{
     
-    const favorite = data.favorites
-    let query = { _id: { $in: favorite } }
-    if(cle && cle !== '')
-    {
-      query = {$and : [{ _id: { $in: favorite } } , {title:{$regex : cle , $options: 'i'}}]}
-    }
-      
-    Book.find(query ).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-    .then(data=>{
-      Book.find(query).count()
-      .then(count =>{
-          res.json({cle:cle,page:page,size:size,length:count,docs :data})
-      })
-      
-    })
-    
-  })
+  
 });
 //get lire plus tard books
-Router.route('/lireplustard').get(  (req, res) => {
+Router.route('/lireplustard').get( async (req, res) => {
   const {id,page,size,cle}=req.query
-  Reader.findById(id,{"lireplustard":1})
-  .then(data =>{
-    
-    const lireplustard = data.lireplustard
-    let query = { _id: { $in: lireplustard } }
-    if(cle && cle !== '')
-    {
-      query = {$and : [{ _id: { $in: lireplustard } } , {title:{$regex : cle , $options: 'i'}}]}
-    }
-    Book.find( query ).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-    .then(data=>{
-      Book.find(query).count()
-      .then(count =>{
-          res.json({cle:cle,page:page,size:size,lenght:count,docs :data})
-      })
-      
-    })
-    
-  })
+  if(!id){
+    res.status(400).send("id user needed.....")
+    return 
+  } 
+  const reader = await Reader.findById(id,{"lireplustard":1})
+  const lireplustard = reader.lireplustard
+  let query = { _id: { $in: lireplustard } }
+  const books = await bookDao.find({cle,query,page,size,})
+  const length = await bookDao.count(query)
+  if(books) 
+    res.json({length ,page,size ,cle, docs:books})
+  else 
+    res.status(400).send("Error .....")
 });
 
 //get lectures books
-Router.route('/lectures').get(  (req, res) => {
+Router.route('/lectures').get( async (req, res) => {
   const {id,page,size,cle}=req.query
-  Reader.findById(id,{"lectures":1})
-  .then(data =>{
-    
-    const lectures = data.lectures
+  if(!id){
+    res.status(400).send("id user needed.....")
+    return 
+  } 
+  const reader = await Reader.findById(id,{"lectures":1})
+  const lectures = reader.lectures
     let query = { _id: { $in: lectures } }
-    if(cle && cle !== '')
-    {
-      query = {$and : [{ _id: { $in: lectures } } , {title:{$regex : cle , $options: 'i'}}]}
-    }
-    Book.find( query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-    .then(data=>{
-      Book.find( query).count()
-      .then(count =>{
-          res.json({cle:cle,page:page,size:size,lenght:count,docs :data})
-      })
-    })
-    
-  })
+  const books = await bookDao.find({cle,query,page,size,})
+  const length = await bookDao.count(query)
+  if(books) 
+    res.json({length ,page,size ,cle, docs:books})
+  else 
+    res.status(400).send("Error .....")
 });
 //get encours books
-Router.route('/encours').get(  (req, res) => {
+Router.route('/encours').get( async (req, res) => {
   const {id,page,size,cle}=req.query
-  Reader.findById(id,{"encours":1})
-  .then(data =>{
-    
-    const encours = data.encours
-    let query = { _id: { $in: encours } }
-    if(cle || cle !== '')
-    {
-      query = {$and : [{ _id: { $in: encours } } , {title:{$regex : cle , $options: 'i'}}]}
-    }
-    Book.find( query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-    .then(data=>{
-      Book.find(query).count()
-      .then(count =>{
-          res.json({cle:cle,page:page,size:size,lenght:count,docs :data})
-      })
-    })
-    
-  })
+  if(!id){
+    res.status(400).send("id user needed.....")
+    return 
+  } 
+  const reader = await Reader.findById(id,{"encours":1})
+  const encours = reader.encours
+  let query = { _id: { $in: encours } }
+  const books = await bookDao.find({cle,query,page,size,})
+  const length = await bookDao.count(query)
+  if(books) 
+    res.json({length ,page,size ,cle, docs:books})
+  else 
+    res.status(400).send("Error .....")
 });
 //add book
-Router.route('/add').post(function(req,res){
+Router.route('/add').post(async (req,res)=>{
     const {
       title,
       ISBN,
@@ -186,19 +160,12 @@ Router.route('/add').post(function(req,res){
     
   
     const newBook= new Book({
-      title,
-      ISBN,
-      langage,
-      description,
-      pages,
-      authors,
-      country,
-      subject,
-      image
+      ...req.body
     });
-     newBook.save()
-    .then(() => res.json('book added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    const respense = await bookDao.save(newBook)
+    if(respense)res.json('book added!')
+    else res.status(400).json('Error: ' )
+    
 });
 
 
@@ -206,94 +173,66 @@ Router.route('/add').post(function(req,res){
 
 
 //delete book
-Router.route('/:id').delete(function(req,res){
+Router.route('/:id').delete(async(req,res)=>{
     const {id} = req.params;
-   
-     Book.findByIdAndDelete(id)
-    .then(() => res.json('book deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err)); 
+    if(!id)
+    {
+      res.status(400).send("required id host/:id")  
+      return 
+    }
+    const respense = await bookDao.delete(id)
+    if(respense) res.json('book deleted.')
+    else res.status(400).json('Error: ' )
 });
 
 //get book by id
-Router.route('/:id').get((req, res) => {
+Router.route('/:id').get(async(req, res) => {
     const {id} = req.params;
-    Book.findById(id)
-      .then(book => res.json(book))
-      .catch(err => res.status(400).json('Error: ' + err));
+    const book = await bookDao.getOne(id)
+    if(book) res.json(book)
+    else res.status(400).json('Error: ' + err)
   });
 //get book by page & size
-Router.route('/').get((req, res) => {
+Router.route('/').get(async(req, res) => {
     const {page,size,cle} = req.query
-    if(!cle && !size && !page)
+    const books = await bookDao.getMany( {page,size,cle})
+    if(books)
     {
-      Book.find().then((data)=>{
-        
-       
-        console.log(data[0] instanceof Book)
-        Book.find().count()
-          .then(count => res.json({length : count ,docs:data}))
-          .catch(err => res.status(400).json('Error: ' + err));
-      }).catch(err => res.status(400).json('Error: ' + err));
-      return ;
+      const length = await bookDao.count()
+      res.json({page,size,cle,length,docs:books})
+
     }
-    let query = {}
-    if(cle || cle !== '')
-    {
-      query =  {title:{$regex : cle , $options: 'i'}}
-    }
-    Book.find(query).limit(parseInt(size)).skip(parseInt(size)*parseInt(page))
-      .then(books => {
-        
-        Book.find(query).count()
-          .then(count => res.json({length : count ,page:page,size:size,cle:cle,docs:books}))
-          .catch(err => res.status(400).json('Error: ' + err));
-      })
-      .catch(err => res.status(400).json('Error: ' + err));
+    else res.status(400).json('Error: ')
 });
 
 //rating book 
 Router.route('/rate').put(async(req, res) => {
 
   const {idBook , id,rate,comment} = req.body
-  
   const reader = await Reader.findById(id)
   const book = await Book.findById(idBook)
   const userRating = {idBook,comment,rate} 
   const rating = reader.rating.find(item=> idBook === item.idBook )
-  console.log("new rating : ",userRating)
-  console.log("old rating : ",rating)
   if(rating)
   {
     
-    console.log("***** old rating exist ******* ")
-    console.log("old rating found ....... ")
     reader.rating.pop(rating)
-    console.log("delete old rating ....... ",reader.rating)
     reader.rating.push(userRating)
-    console.log("add new rating ....... ",reader.rating)
 
     if(reader instanceof Reader) {
-      console.log("save reader......",reader instanceof Reader)
       await reader.save()
     }else res.status(400),json("error")
   }else {
-    console.log("***** old rating not exist ******* ")
     book.rating.ratedby.push(id)
-    console.log("add to rated by ....... ",book.rating.ratedby)
     reader.rating.push(userRating)
-    console.log("add new rating ....... ",reader.rating)
     if(book instanceof Book && reader instanceof Reader) {  
-      console.log("save reader......",reader instanceof Reader)
-      console.log("save book......",book instanceof Book)
       await reader.save()
       await book.save()
     }else res.status(400),json("error")
   }
 
-  console.log("find All users ......")
   let readersRatedBook = await Reader.find()
   
-  console.log("extract rates ......")
   readersRatedBook=readersRatedBook.filter((user,i)=>{
       if(user.rating.find(r=> r.idBook === idBook))
       {
@@ -304,17 +243,12 @@ Router.route('/rate').put(async(req, res) => {
   const rates = readersRatedBook.map(r =>{
       const rating = r.rating
       const index = rating.indexOf(rating.find(r=> r.idBook === idBook))
-      console.log(index)
       return r.rating[index].rate
   }) 
-  //console.log(rates)
   book.rating.rate =Math.round(rateMe(rates))
-  console.log("averege ......", book.rating.rate)
   if(book instanceof Book)
   {
-    console.log("save book......",book instanceof Book)
     await book.save()
-    console.log("ends................")
 
     res.json({rate : book.rating.rate})
   }
@@ -325,14 +259,20 @@ Router.route('/rate').put(async(req, res) => {
 //count numbre of books
 Router.route('/count').get((req, res) => {
   
+
     Book.find().count()
       .then(count => res.json(count))
       .catch(err => res.status(400).json('Error: ' + err));
   });
-  Router.route('/:id').put( async (req, res) => {
+
+Router.route('/:id').put( async (req, res) => {
     //const {id,title,description,book_link,book_image,writers} = req.body;
      const id = req.params.id
-  
+    if(!id )
+    {
+      res.status(400).send("required id host/:id")
+      return 
+    }
       let book = await Book.findOneAndUpdate({_id:id}, req.body, {
         new: true,
         upsert: true,

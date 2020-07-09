@@ -47,7 +47,7 @@ const AllCategories = (props)=>{
         title: 'Action',
         render: (props) => {
           return(
-            <div><Link to={"booksManagement/"+props.key} >afficher</Link>
+            <div><Link to={"categorieManagement/"+props.categorie} >afficher</Link>
             <span> | </span>
             <Link onClick={()=>{showModal(props);console.log(visible)}} >delete</Link></div>
           )
@@ -87,7 +87,7 @@ const AllCategories = (props)=>{
       setTimeout(() => {
         setLoading(false)
       }, 500);
-        BooksDao.getBooksByPage(pageNumber,props)
+        //BooksDao.getBooksByPage(pageNumber,props)
         props.bookCurrentPage(pageNumber-1)
         
         console.log('Page: ', pageNumber);

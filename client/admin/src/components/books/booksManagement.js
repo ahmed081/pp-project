@@ -34,11 +34,6 @@ const BookManagement = (props)=>{
     let location = useLocation()
     
     useEffect(() => {
-      
-      console.log("props books : ",props)
-      props.bookCurrentPage(0)
-      BooksDao.getBooksByPage(0,props)
-
         props.setTitle(Const.BOOKSUI_TITLE)
         }, [])
     return (
@@ -50,13 +45,9 @@ const BookManagement = (props)=>{
     )
 }
 const mapSotre =(store)=>{
-    const {BooksManagemntReducer} = store
     const {TokenReduicer} = store
-    const {BooksPageReduicer} = store
     return {
-      books : BooksManagemntReducer,
       token : TokenReduicer,
-      page : BooksPageReduicer
     }
 }
 

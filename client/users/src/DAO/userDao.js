@@ -11,18 +11,17 @@ export const getUser =(props)=>{
 }
 export const getOne =async(id)=>{
     const res = await Axios.get(`${uri}/reader/${id}`)
+    
     return res.data
 
 }
 export const getFriends =async(props)=>{
-    console.log(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
     const res = await Axios.get(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
     return res.data
 
 }
 export const getReaders =async(props)=>{
-    console.log(`${uri}/reader/getfriend?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
-    const res = await Axios.get(`${uri}/reader/searsh?id=${props.user._id}&page=${props.page}&size=${props.size}&cle=${props.cle}`)
+    const res = await Axios.get(`${uri}/reader/?page=${props.page}&size=${props.size}&cle=${props.cle}`)
     return res.data
 
 }

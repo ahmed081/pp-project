@@ -8,7 +8,7 @@ import {
 import BookManagement from "../books/booksManagement"
 import UserManagement from "../readers/userManagement"
  /* import Home from "./Home"*/
-import claimsManagement from "../claims/claimsManagement" 
+import claimsManagement from "../claims/index" 
 import App from '../../App'
 import categorieManagement from '../categories/categorieManagement';
 import Statistique from '../statistic/statistique';

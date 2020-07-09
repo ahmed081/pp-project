@@ -1,0 +1,30 @@
+{
+    "subscribe": false,
+    "favorites": [],
+    "encours": [],
+    "lectures": [],
+    "lireplustard": [],
+    "friends": [],
+    "rating": [],
+    "name": {
+    "first": "",
+    "last": ""
+    },
+    "email": "",
+    "mobile": "",
+    "gender": "",
+    "login": {
+    "username": "",
+    "password": ""
+    },
+    "dob": {
+    "date": "",
+    "age": 0
+    },
+    "picture": {
+    "large": "",
+    "medium": "",
+    "thumbnail": ""
+    },
+    "lireplusTard": []
+}

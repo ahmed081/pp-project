@@ -24,7 +24,7 @@ const ClaimManagement = (props)=>{
             </div>
             <Row gutter={[16,16]}>
                 <Col span={8} style={{cursor:"pointer"}}>
-                    <Link>
+                    <Link to="/claimsManagement/book">
                         <div style={{boxShadow:"0px 0px 2px black", padding: '20px',width:'100%',height:"100%"}}>
                             <div style={{fontSize: "80px"}}>
                                 <center>
@@ -44,7 +44,7 @@ const ClaimManagement = (props)=>{
                     
                 </Col>
                 <Col span={8} style={{}}>
-                <Link>
+                <Link to="/claimsManagement/user">
                         <div style={{boxShadow:"0px 0px 2px black", padding: '20px',width:'100%',height:"100%"}}>
                             <div style={{fontSize: "80px"}}>
                                 <center>
@@ -54,7 +54,7 @@ const ClaimManagement = (props)=>{
                             <div>
                                 <center>
                                     <h3>
-                                        les réclamations des Utilisateurs
+                                        les réclamations des Lecteurs
                                     </h3>
                                         
                                 </center> 
@@ -64,7 +64,7 @@ const ClaimManagement = (props)=>{
 
                 </Col>
                 <Col span={8} style={{}}>
-                    <Link>
+                    <Link to="/claimsManagement/message">
                         <div style={{boxShadow:"0px 0px 2px black", padding: '20px',width:'100%',height:"100%"}}>
                             <div style={{fontSize: "80px"}}>
                                 <center>

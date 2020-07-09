@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react'
-import {Button,Modal} from 'antd'
+import {Button,Modal, Input, Badge} from 'antd'
 import {connect} from 'react-redux'
 import { Table, Radio, Divider,Select } from 'antd';
 import { Link,useLocation } from 'react-router-dom'
 import Actions from '../../redux/actions'
 import BooksDao from '../../dao/booksDao'
-
+import { getAll } from '../../dao/readerDao';
+const size =20
 
 /* 
     #to do 
@@ -24,11 +25,7 @@ const { Option } = Select;
 const Reader = (props)=>{
   
     
-  const [visible,setVisible]= useState(false)
-  const [loading , setLoading] = useState(true)
-  const [reader,setReader]= useState()
-  const [selectedRows,setSelectedRows] = useState([])
-  const [action , setAction]= useState()
+
   const rowSelection = {
     onChange: (_selectedRowKeys, _selectedRows) => {
       setSelectedRows(_selectedRows)
@@ -43,8 +40,7 @@ const Reader = (props)=>{
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      render: name  => <a>{name.fist + " "+name.last}</a>,
+      render: reader  => <Link to={`/usersManagement/${reader._id}`}>{reader.name.first + " "+reader.name.last}</Link>,
     },
     {
       title: 'email',
@@ -55,6 +51,11 @@ const Reader = (props)=>{
       dataIndex: 'gender',
     },
     {
+      title: 'abonnée',
+      dataIndex: 'subscribe',
+      render : subscribe => <div>{<Badge status={subscribe?"success":"error"} text	={`${subscribe}`} />}</div>
+    },
+    {
       title: 'Age',
       dataIndex: 'dob',
       render : dob => <div>{dob.age}</div>
@@ -63,7 +64,7 @@ const Reader = (props)=>{
         title: 'Actions',
         render: (props) => {
           return(
-            <div><Link to={"usersManagement/"+props.key} >afficher</Link>
+            <div><Link to={"/usersManagement/"+props._id} >afficher</Link>
             <span> | </span>
             <Link onClick={()=>{showModal(props);console.log(visible)}} >delete</Link></div>
           )
@@ -74,6 +75,7 @@ const Reader = (props)=>{
 
     const showModal = (props) => {
       setReader(props)
+      console.log(props)
       setVisible(true)
     };
   
@@ -90,32 +92,57 @@ const Reader = (props)=>{
       console.log("cancel delete ",reader._id)
       setVisible(false)
     };
+    const [visible,setVisible]= useState(false)
+    const [loading , setLoading] = useState(true)
+    const [reader,setReader]= useState()
+    const [selectedRows,setSelectedRows] = useState([])
+    const [action , setAction]= useState()
+    const [page , setPage]= useState(1)
+    const [length , setlength]= useState()
+    const [readers , setReaders]= useState()
+    const [cle , setCle]= useState("")
     useEffect(() => {
+      setTimeout(() => {
+      getAll({page:page-1,size:size,cle:cle}).then(data=>{
+        setLoading(false)
+        setReaders(data.docs)
+        setlength(data.length)
+      })
+      
+      }, 500);
+    
+    }, [])
+    const searsh = async(motCle)=>{
+        //searsh
+        setLoading(true)
+        const data = await getAll({page:page-1,size:size,cle:motCle})
         setTimeout(() => {
           setLoading(false)
-          console.log(props.readers)
+          setReaders(data.docs)
+          setlength(data.length)
         }, 500);
-        console.log("all readers : ", props)
-        }, [])
-        function onChange(pageNumber) {
-          setLoading(true)
-          setTimeout(() => {
-            setLoading(false)
-          }, 500);
-            BooksDao.getBooksByPage(pageNumber,props)
-            props.readerCurrentPage(pageNumber-1)
-            
-            console.log('Page: ', pageNumber);
-          }
-          function handleChange(value) {
-            setAction(value)
-            console.log(`selected ${value}`);
-          }
+    }
+    const  onChange=async(pageNumber)=> {
+      setLoading(true)
+      const data = await getAll({page:pageNumber-1,size:size,cle:cle})
+      setTimeout(() => {
+        setPage(pageNumber)
+        setReaders(data.docs)
+        setlength(data.length)
+        setLoading(false)
+
+      }, 500);
+        
+      }
+    function handleChange(value) {
+      setAction(value)
+      console.log(`selected ${value}`);
+    }
     return (
         <div>
             <SuppModel handleCancel = {handleCancel} handleOk={handleOk} visible ={visible} reader={reader} />
             <Button type="dashed" style ={{float: "right",top: "18px", fontWeight: "bold"}} >
-              <Link to ='usersManagement/add'>ajouter nouveau</Link>
+              <Link to ='/usersManagement/add'>ajouter nouveau</Link>
             </Button>
             <div style={{position: "relative",top: "40px"}}>
                 <Select defaultValue="action" style={{ width: 120 }} onChange={handleChange}>
@@ -127,14 +154,17 @@ const Reader = (props)=>{
                     onClick={()=>{action ==="Supprimer" ?selectedRows.map(async reader => await BooksDao.deleteBook(props.token,reader,props)):console.log("ssss")}}>
                     executer 
                 </Button>
+                <div  style={{width:"50%"}} >
+                  <Input.Search placeholder='Chercher lecteur' onChange={event=> {setCle(event.target.value);searsh(event.target.value)}} onSearch={(value, event)=>searsh(cle)}/>
+                </div>
                 <Table 
-                        pagination={{defaultCurrent:props.page+1,total:props.length,onChange:onChange}}
+                        pagination={{defaultCurrent:page,total:length,onChange:onChange}}
                         {...{loading:loading}}
                         rowSelection={{
                          ...rowSelection,
                         }}
                         columns={columns}
-                        dataSource={props.readers}
+                        dataSource={readers}
                 />
             </div>
             
@@ -145,12 +175,12 @@ const Reader = (props)=>{
 const SuppModel = (props)=>{
   return(
     <Modal
-          title="Supprimer un livre"
+          title="Suppression d'un lecteur"
           visible={props.visible}
           onOk={props.handleOk}
           onCancel={props.handleCancel}
         >
-          {props.reader?<p>voulez vous vraiment supprimer le livre : {props.reader.name.fist+ " "+props.reader.name.last}</p> :null}
+          {props.reader?<p>voulez vous vraiment supprimer le lecteur :{`  ${props.reader.name.first} ${props.reader.name.last} `}</p> :null}
           
           
         </Modal>
@@ -158,16 +188,10 @@ const SuppModel = (props)=>{
 }
 
 const mapSotre =(store)=>{
-  const {ReadersManagemntReducer} = store
-  const {ReadersLenghtReduicer} = store
   const {TokenReduicer} = store
-  const {ReadersPageReduicer} = store
   return {
     
-    readers : ReadersManagemntReducer,
-    length : ReadersLenghtReduicer,
     token : TokenReduicer,
-    page : ReadersPageReduicer
   }
 } 
 
